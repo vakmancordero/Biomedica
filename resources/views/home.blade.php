@@ -57,11 +57,11 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Tabla de equipos</div>
                         <div class="panel-body">
-                            <table id="table" data-toggle="table" data-url="tables/data1.json"  data-show-refresh="true"data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" data-click-to-select="true" >
+                            <table id="table" data-toggle="table" data-url="/search/equipos/"  data-show-refresh="true"data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" data-click-to-select="true" >
                                 <thead>
                                 <tr>
                                     <th data-checkbox="true" >ID</th>
-                                    <th data-field="idEquipo" data-sortable="true">ID</th>
+                                    <th data-field="id" data-sortable="true">ID</th>
                                     <th data-field="Nombre"  data-sortable="true">Nombre</th>
                                     <th data-field="Marca" data-sortable="true">Marca</th>
                                     <th data-field="Modelo" data-sortable="true">Modelo</th>

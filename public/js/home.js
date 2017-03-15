@@ -1,17 +1,15 @@
 var app = angular.module('biomedicalApp', []);
 
-app.controller('biomedicalController', function ($scope) {
-
-    alert('Hello World');
+app.controller('biomedicalController', function ($scope, $http) {
 
     $http({
         method: 'GET',
-        url: '/'
-    }).then(function successCallback(response) {
+        url: '/search/equipos/'
+    }).then(function (response) {
 
+        return response.data.equipos;
 
-
-    }, function errorCallback(response) {
+    }, function (response) {
 
     });
 

@@ -7,8 +7,6 @@ $(document).ready(function(){
 	$(".anadirAlumno").css("display","none");
 	$(".asignarT").css("display","none");
 	
-
-
 	$(".asignar2").click(function(e){
 		e.preventDefault();
 		var $table = $("#table");

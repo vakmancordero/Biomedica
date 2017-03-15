@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/search/products/{word}', 'SearchController@autocomplete');
+Route::get('/search/equipos', 'BiomedicalController@equipos');
