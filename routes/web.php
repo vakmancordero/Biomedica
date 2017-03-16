@@ -15,4 +15,12 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/angular/type', function () {
+    return view('angular-templates.type');
+});
+
 Route::get('/search/equipos', 'BiomedicalController@equipos');
+
+Route::get('/search/personas/{number}',array('as'=>'test','uses'=>'BiomedicalController@personas'));
+
+Route::post('/create/persona', 'BiomedicalController@store');

@@ -9,12 +9,13 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/datepicker.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
 
-    @yield('stylesheets')
-
     <script src="{{ asset('lib/jquery-3.1.1.min.js') }}"></script>
     <script src="{{ asset('lib/angular.min.js') }}"></script>
+    {{--<script src="{{ asset('lib/ui-bootstrap-tpls-2.5.0.min.js') }}"></script>--}}
     <script src="{{ asset('lib/bootstrap-3.3.7/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('lib/lumino.glyphs.js') }}"></script>
+
+    @yield('stylesheets')
 
     @yield('javascript-before')
 
