@@ -11,11 +11,55 @@
 @stop
 
 @section('content')
-
     <div ng-app="biomedicalApp" ng-controller="biomedicalController">
-
-        <div class="modal fade" id="typeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-            <div class="modal-dialog">
+        <div class="modal fade bd-example-modal-lg" id="assignmentsModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Asignaciones</h4>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h2 style="color: darkslategrey">Lista de asignaciones pendientes de entrega:</h2>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table class="table">
+                                            <thead class="thead-inverse">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Equipo</th>
+                                                <th>Persona</th>
+                                                <th>Responsable</th>
+                                                <th>Estado</th>
+                                                <th>Eliminar</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="assignment in assignments track by $index">
+                                                <td>@{{assignment.id}}</td>
+                                                <td>@{{assignment.equipo}}</td>
+                                                <td>@{{assignment.persona}}</td>
+                                                <td>@{{assignment.responsable}}</td>
+                                                <td>@{{assignment.estado}}</td>
+                                                <td ng-if="assignment.estado == 'activo'"><input type="button" ng-click="delete($index)" class="btn btn-danger btn-sm" value="Eliminar"></td>
+                                                <td ng-if="assignment.estado != 'activo'"><input ng-disabled="true" type="button" ng-click="ver($index)" class="btn btn-danger btn-sm" value="Ver"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="typeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -40,8 +84,7 @@
                 </div>
             </div>
         </div>
-
-        <div class="modal fade bs-example-modal-lg" id="equipmentModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal fade" id="equipmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -55,7 +98,6 @@
                                 <li class="active">Asignar equipo</li>
                             </ol>
                         </div>
-
                         <div class="row">
                             <div class="col-lg-12">
                                 <h1 class="page-header">Asignar equipo</h1>
@@ -73,22 +115,54 @@
                                         }}
                                     </div>
                                     <div class="panel-body">
-                                        <form class="col-md-6" ng-submit="find()">
-                                            <div class="form-group">
-
-                                                <div ng-switch on="typePerson">
-                                                    <div ng-switch-when="student">
-                                                        <label>Matricula: </label>
-                                                        <input type="text" pattern="\d*" maxlength="6" class="form-control" placeholder="Ejemplo: 113128" required ng-model="person.matricula">
+                                        <div class="col-md-6">
+                                            <form ng-submit="find()">
+                                                <div class="form-group">
+                                                    <div ng-switch on="typePerson">
+                                                        <div ng-switch-when="student">
+                                                            <label>Matricula: </label>
+                                                            <input type="text" ng-disabled="person.found" pattern="\d*" maxlength="6" class="form-control" placeholder="Ejemplo: 113128" required ng-model="person.matricula">
+                                                        </div>
+                                                        <div ng-switch-default>
+                                                            <label>No. Control:</label>
+                                                            <input type="text" ng-disabled="person.found" pattern="\d*" maxlength="4" class="form-control" placeholder="Ejemplo: 1131" required ng-model="person.control">
+                                                        </div>
                                                     </div>
-                                                    <div ng-switch-default>
-                                                        <label>No. Control:</label>
-                                                        <input type="text" pattern="\d*" maxlength="4" class="form-control" placeholder="Ejemplo: 1131" required ng-model="person.control">
+                                                </div>
+                                                <button class="btn btn-success" type="submit">Buscar</button>
+                                                <button class="btn btn-danger" type="reset" ng-click="resetPerson()">Cancelar</button>
+                                            </form>
+                                            <hr/>
+                                            <div ng-switch on="person.found">
+                                                <div ng-switch-when="true">
+
+                                                    <div ng-switch on="typePerson">
+                                                        <div ng-switch-when="student">
+                                                            <div ng-switch on="assignedProfessor.found">
+                                                                <div ng-switch-when="true">
+                                                                    <h4>Buscar <strong style="color: forestgreen">profesor</strong> a asignar </h4>
+                                                                    <h4>Asignación: <strong style="color: darkslategrey">[@{{ assignedProfessor.nombre }}]</strong></h4>
+                                                                </div>
+                                                                <div ng-switch-when="false">
+                                                                    <h4>Buscar <strong style="color: forestgreen">profesor</strong> a asignar
+                                                                        <strong style="color: darkred">[Sin asignar]</strong>
+                                                                    </h4>
+                                                                </div>
+                                                            </div>
+                                                            <form ng-submit="findProfessor()">
+                                                                <div class="form-group">
+                                                                    <label>No. Control:</label>
+                                                                    <input type="text" pattern="\d*" maxlength="4" class="form-control" placeholder="Ejemplo: 1131" required ng-model="person.control">
+                                                                </div>
+                                                                <div class="text-right">
+                                                                    <button class="btn btn-default" type="submit">Buscar</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button class="btn btn-success" type="submit">Buscar</button>
-                                        </form>
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="panel panel-success">
                                                 <div ng-switch on="person.found">
@@ -196,11 +270,8 @@
                                                             </form>
                                                         </div>
                                                     </div>
-                                                    <div ng-switch-default>
-
-                                                    </div>
+                                                    <div ng-switch-default></div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -208,41 +279,21 @@
 
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" ng-click="open()">Continuar</button>
+                        <button type="button" class="btn btn-primary" ng-click="finishAssignment()">Finalizar</button>
                         <a href="#" ng-click="resetVariables()" data-dismiss="modal" class="btn btn-danger">Cerrar</a>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-
-            <ul class="nav menu">
-                <li class="active">
-                    <a href="/">
-                        <svg class="glyph stroked table">
-                            <use xlink:href="#stroked-table"></use>
-                        </svg>
-                        Control
-                    </a>
-                </li>
-            </ul>
-        </div>
-
         <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-
-            <a  href='/angular/type' class='ls-modal'>Login</a>
-
             <div class="row">
                 <ol class="breadcrumb">
                     <li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
                     <li class="active">Control</li>
                 </ol>
             </div>
-
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Control de equipos</h1>
@@ -251,10 +302,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Tabla de equipos</div>
+                        <div class="panel-heading">Tabla de equipos:</div>
                         <div class="panel-body">
-
-                            <form ng-submit="typeAction()">
+                            <form>
                                 <table id="bootstrap_table" data-toggle="table" data-url="/search/equipos/"  data-show-refresh="true"data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" data-click-to-select="true" >
                                     <thead>
                                     <tr>
@@ -270,13 +320,30 @@
                                     </tr>
                                     </thead>
                                 </table>
-                                <button class="btn btn-primary" type="submit">Asignar</button>
+                                <button class="btn btn-primary" type="button" ng-click="typeAction()">Asignar</button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+            <ul class="nav menu">
+                <li class="">
+                    <a href="/">
+                        <svg class="glyph stroked table">
+                            <use xlink:href="#stroked-table"></use>
+                        </svg>
+                        Control de equipos
+                    </a>
+                </li>
+                <li class="">
+                    <a id="assignments" href="/">
+                        <svg class="glyph stroked clock"><use xlink:href="#stroked-clock"/></svg>
+                        Registro de asignaciones
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-
 @stop

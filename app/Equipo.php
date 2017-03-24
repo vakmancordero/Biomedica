@@ -9,4 +9,8 @@ class Equipo extends Model {
     protected $table = 'equipos';
     protected $fillable = ['Nombre', 'Marca', 'Modelo', 'NumeroSerie', 'NumeroInventario', 'Observaciones', 'Estado'];
 
+    public function personaequipo() {
+        return $this->belongsTo('App\PersonaEquipo');
+    }
+
 }
