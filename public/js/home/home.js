@@ -8,8 +8,9 @@ app.controller('biomedicalController', function ($scope, $http) {
     $scope.addPerson = {};
     $scope.assignedProfessor = {};
     $scope.assignments = [];
-
     $scope.equipmentCrud = {};
+
+    var randomScalingFactor = function(){ return Math.round(Math.random()*1000)};
 
     angular.element(document).ready(function () {
 
@@ -18,7 +19,61 @@ app.controller('biomedicalController', function ($scope, $http) {
         initButtons();
         initAssignments();
 
+        var mostBar = document.getElementById("most-bar-chart").getContext("2d");
+        var leastBar = document.getElementById("least-bar-chart").getContext("2d");
+
+        $http({
+            method: 'GET',
+            url: '/search/testa/'
+        }).then(function (response) {
+
+            var mostChartData = getChartData(response.data.most);
+            var leastChartData = getChartData(response.data.least);
+
+            window.myBar = new Chart(mostBar).Bar(mostChartData, {
+                responsive : true
+            });
+
+            window.myBar = new Chart(leastBar).Bar(leastChartData, {
+                responsive : true
+            });
+
+        }, function (response) {
+
+            console.log("something went wrong");
+
+        });
+
     });
+
+    function getChartData(arr) {
+
+        var labels = [];
+        var data = [];
+
+        angular.forEach(arr, function(equipment, key) {
+
+            labels.push(equipment.nombre);
+            data.push(equipment.counter);
+
+        });
+
+        var datasets = [{
+            fillColor : "rgba(154,232,225,0.5)",
+            strokeColor : "rgba(220,220,220,0.8)",
+            highlightFill: "rgba(220,220,220,0.75)",
+            highlightStroke: "rgba(220,220,220,1)",
+            data : data
+        }];
+
+        var barChartData = {
+            labels : labels,
+            datasets : datasets
+        };
+
+        return barChartData;
+
+    }
 
     function initButtons() {
 
@@ -46,6 +101,10 @@ app.controller('biomedicalController', function ($scope, $http) {
             } else if(idModal == 'persons') {
 
 
+
+            } else if(idModal == 'equipment_graphic') {
+
+                $("#equipmentGraphicModal").modal("show");
 
             }
 
@@ -81,8 +140,6 @@ app.controller('biomedicalController', function ($scope, $http) {
             angular.forEach(response.data, function(assignment, key) {
                 $scope.assignments.push(assignment);
             });
-
-            console.log($scope.assignments);
 
         }, function (response) {
 
@@ -738,7 +795,7 @@ app.controller('biomedicalController', function ($scope, $http) {
 function deleteFormatter(value, row, index) {
     return [
         '<button class="btn btn-danger delete" href="javascript:void(0)">',
-            'Eliminar',
+        'Eliminar',
         '</button>'
     ].join('');
 }
@@ -758,7 +815,7 @@ window.operateEvents = {
         var biomedicalApp = getApp('biomedicalApp');
 
         biomedicalApp.deleteEquipment(row, index);
-        
+
     },
     'click .edit': function (e, value, row, index) {
 

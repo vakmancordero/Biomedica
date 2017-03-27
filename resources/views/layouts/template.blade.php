@@ -13,6 +13,7 @@
     <script src="{{ asset('lib/angular.min.js') }}"></script>
     <script src="{{ asset('lib/bootstrap-3.3.7/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('lib/lumino.glyphs.js') }}"></script>
+    <script src="{{ asset('lib/chart.min.js') }}"></script>
 
     @yield('stylesheets')
 

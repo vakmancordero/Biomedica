@@ -403,7 +403,6 @@
             </div>
         </div>
 
-
         {{-- Crear un equipo --}}
         <div class="modal fade" id="createEquipmentModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
@@ -566,8 +565,76 @@
                                 </tr>
                                 </thead>
                             </table>
-                            <button class="btn btn-primary" type="button" ng-click="typeAction()">Asignar</button>
+
+                            <button class="btn btn-primary btn-block btn-lg" type="button" ng-click="typeAction()">Asignar</button>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">Equipos más utilizados</div>
+                                        <div class="panel-body">
+                                            <div class="canvas-wrapper">
+                                                <canvas class="main-chart" id="most-bar-chart" height="200" width="600"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">Equipos menos utilizados</div>
+                                        <div class="panel-body">
+                                            <div class="canvas-wrapper">
+                                                <canvas class="main-chart" id="least-bar-chart" height="200" width="600"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {{-- Modal de gráfica de utilización de equipos --}}
+        <div class="modal fade" id="equipmentGraphicModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Gráfica de utilización
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="panel-body">
+                                            <h2>Gráfica de barras</h2>
+
+                                            {{--<div class="row">--}}
+                                                {{--<div class="col-lg-12">--}}
+                                                    {{--<div class="panel panel-default">--}}
+                                                        {{--<div class="panel-heading">Bar Chart</div>--}}
+                                                        {{--<div class="panel-body">--}}
+                                                            {{--<div class="canvas-wrapper">--}}
+                                                                {{--<canvas class="main-chart" id="bar-chart" height="200" width="600"></canvas>--}}
+                                                            {{--</div>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        {{--<a href="#" ng-click="resetVariables()" data-dismiss="modal" class="btn btn-danger">Cerrar</a>--}}
+                        <a href="#" data-dismiss="modal" class="btn btn-danger">Cerrar</a>
                     </div>
                 </div>
             </div>
@@ -611,6 +678,12 @@
                     <a id="assignments_historial" class="modal-click" href="#">
                         <svg class="glyph stroked eye"><use xlink:href="#stroked-eye"/></svg>
                         Historial de asignaciones
+                    </a>
+                </li>
+                <li>
+                    <a id="equipment_graphic" class="modal-click" href="#">
+                        <svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg>
+                        Gráfica de utilización de equipos
                     </a>
                 </li>
             </ul>

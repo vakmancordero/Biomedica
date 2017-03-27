@@ -18,7 +18,7 @@ Route::get('/', function () {
 Route::get('/search/equipos', 'BiomedicalController@equipos');
 Route::get('/search/testa', 'BiomedicalController@testa');
 
-Route::get('/search/personas/{number}',array('as'=>'test','uses'=>'BiomedicalController@personas'));
+Route::get('/search/personas/{number}', array('as'=>'test','uses'=>'BiomedicalController@personas'));
 
 Route::get('/search/asignaciones', 'BiomedicalController@asignaciones');
 

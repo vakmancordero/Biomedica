@@ -229,16 +229,66 @@ class BiomedicalController extends Controller {
 
     public function testa() {
 
+        $least = DB::select(
+                'SELECT * FROM (SELECT personaequipo.idEquipo, Count(personaequipo.idEquipo) AS counter
+                 FROM personaequipo GROUP BY personaEquipo.idEquipo) a ORDER BY counter asc limit 5;'
+        );
+
+        $array = json_decode(json_encode($least), True);
+
+        $leastArr = [];
+
+        foreach ($array as $record) {
+
+            $equipment = App\Equipo::find($record['idEquipo']);
+
+            $object = (object)[
+                'nombre' => $equipment->NumeroSerie,
+                'counter' => $record['counter']
+            ];
+
+            array_push($leastArr, $object);
+
+        }
+
+        $most = DB::select(
+                'SELECT * FROM (SELECT personaequipo.idEquipo, Count(personaequipo.idEquipo) AS counter
+                 FROM personaequipo GROUP BY personaEquipo.idEquipo) a ORDER BY counter desc limit 5;'
+        );
+
+        $array = json_decode(json_encode($most), True);
+
+        $mostArr = [];
+
+        foreach ($array as $record) {
+
+            $equipment = App\Equipo::find($record['idEquipo']);
+
+            $object = (object)[
+                'nombre' => $equipment->NumeroSerie,
+                'counter' => $record['counter']
+            ];
+
+            array_push($mostArr, $object);
+
+        }
+
         return [
-            'most' => DB::select(
-                'SELECT * FROM (SELECT personaequipo.idEquipo, Count(personaequipo.idEquipo) AS CountOfID
-                 FROM personaequipo GROUP BY personaEquipo.idEquipo) a ORDER BY CountOfID asc limit 3;'
-            ),
-            'least' => DB::select(
-                'SELECT * FROM (SELECT personaequipo.idEquipo, Count(personaequipo.idEquipo) AS CountOfID
-                 FROM personaequipo GROUP BY personaEquipo.idEquipo) a ORDER BY CountOfID asc limit 3;'
-            )
+            'least' => $leastArr,
+            'most' => $mostArr
         ];
+
+
+//        return [
+//            'least' => DB::select(
+//                'SELECT * FROM (SELECT personaequipo.idEquipo, Count(personaequipo.idEquipo) AS CountOfID
+//                 FROM personaequipo GROUP BY personaEquipo.idEquipo) a ORDER BY CountOfID asc limit 10;'
+//            ),
+//            'most' => DB::select(
+//                'SELECT * FROM (SELECT personaequipo.idEquipo, Count(personaequipo.idEquipo) AS CountOfID
+//                 FROM personaequipo GROUP BY personaEquipo.idEquipo) a ORDER BY CountOfID desc limit 10;'
+//            )
+//        ];
 
     }
 
