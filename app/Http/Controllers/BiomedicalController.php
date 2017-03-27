@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use App;
 
@@ -20,12 +21,12 @@ class BiomedicalController extends Controller {
 
         $toReturnArr = [];
 
-        foreach (App\PersonaEquipo::where('status', 'activo')->get() as &$personaEquipo) {
+        foreach (App\PersonaEquipo::where('status', 'activo')->orderBy('id', 'desc')->get() as &$personaEquipo) {
 
             $object = (object) [
                 'id' => $personaEquipo->id,
                 'persona' => $personaEquipo->persona->nombre . " [" . $personaEquipo->persona->matricula . "]",
-                'responsable' => $personaEquipo->responsable->nombre,
+                'responsable' => $personaEquipo->responsable->nombre . " [" . $personaEquipo->responsable->matricula . "]",
                 'equipo' => $personaEquipo->equipo->Nombre . " - " .
                             $personaEquipo->equipo->Marca  . " - " .
                             $personaEquipo->equipo->Modelo  . " - " .
@@ -39,6 +40,33 @@ class BiomedicalController extends Controller {
         }
 
         return json_encode($toReturnArr);
+    }
+
+    public function historial() {
+
+        $toReturnArr = [];
+
+        foreach (App\PersonaEquipo::where('status', '!=', 'activo')->orderBy('id', 'desc')->get() as &$personaEquipo) {
+
+            $object = (object) [
+                'id' => $personaEquipo->id,
+                'persona' => $personaEquipo->persona->nombre . " [" . $personaEquipo->persona->matricula . "]",
+                'responsable' => $personaEquipo->responsable->nombre . " [" . $personaEquipo->responsable->matricula . "]",
+                'equipo' => $personaEquipo->equipo->Nombre . " - " .
+                    $personaEquipo->equipo->Marca  . " - " .
+                    $personaEquipo->equipo->Modelo  . " - " .
+                    $personaEquipo->equipo->NumeroInventario,
+                'estado' => $personaEquipo->status,
+                'idEquipo' => $personaEquipo->equipo->id,
+                'fecha' => $personaEquipo->created_at->format('d M Y - H:i:s')
+            ];
+
+            array_push($toReturnArr, $object);
+
+        }
+
+        return json_encode($toReturnArr);
+
     }
 
     public function store_asignacion(Request $request) {
@@ -153,6 +181,65 @@ class BiomedicalController extends Controller {
         $returnValue = $assignment->save();
 
         return json_encode($returnValue);
+    }
+
+    public function delete_equipo(Request $request) {
+
+        $equipmentJSON = json_decode($request->input('equipmentCrud'), true);
+
+        $equipment = App\Equipo::find($equipmentJSON['id']);
+
+        $returnValue = $equipment->delete();
+
+        return json_encode($returnValue);
+    }
+
+    public function update_equipo(Request $request) {
+
+        $equipmentJSON = json_decode($request->input('equipmentCrud'), true);
+
+        $equipment = App\Equipo::find($equipmentJSON['id']);
+
+        $equipment->Nombre = $equipmentJSON['nombre'];
+        $equipment->Marca = $equipmentJSON['marca'];
+        $equipment->Modelo = $equipmentJSON['modelo'];
+        $equipment->NumeroSerie = $equipmentJSON['serie'];
+        $equipment->NumeroInventario = $equipmentJSON['inventario'];
+
+        $returnValue = $equipment->save();
+
+        return json_encode($returnValue);
+    }
+
+    public function store_equipo(Request $request) {
+
+        $equipmentJSON = json_decode($request->input('equipmentCrud'), true);
+
+        $equipment = new App\Equipo;
+        $equipment->Nombre = $equipmentJSON['nombre'];
+        $equipment->Marca = $equipmentJSON['marca'];
+        $equipment->Modelo = $equipmentJSON['modelo'];
+        $equipment->NumeroSerie = $equipmentJSON['serie'];
+        $equipment->NumeroInventario = $equipmentJSON['inventario'];
+
+        $returnValue = $equipment->save();
+
+        return json_encode($returnValue);
+    }
+
+    public function testa() {
+
+        return [
+            'most' => DB::select(
+                'SELECT * FROM (SELECT personaequipo.idEquipo, Count(personaequipo.idEquipo) AS CountOfID
+                 FROM personaequipo GROUP BY personaEquipo.idEquipo) a ORDER BY CountOfID asc limit 3;'
+            ),
+            'least' => DB::select(
+                'SELECT * FROM (SELECT personaequipo.idEquipo, Count(personaequipo.idEquipo) AS CountOfID
+                 FROM personaequipo GROUP BY personaEquipo.idEquipo) a ORDER BY CountOfID asc limit 3;'
+            )
+        ];
+
     }
 
 }

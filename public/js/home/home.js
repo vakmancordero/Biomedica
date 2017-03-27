@@ -9,20 +9,69 @@ app.controller('biomedicalController', function ($scope, $http) {
     $scope.assignedProfessor = {};
     $scope.assignments = [];
 
+    $scope.equipmentCrud = {};
+
     angular.element(document).ready(function () {
 
-        $scope.assignedProfessor.found = false
+        $scope.assignedProfessor.found = false;
 
-        console.log($scope.assignedProfessor.found);
+        initButtons();
+        initAssignments();
 
-        $('a#assignments').click(function(event) {
+    });
+
+    function initButtons() {
+
+        $('a.modal-click').click(function(event) {
 
             event.preventDefault();
 
-            $("#assignmentsModal").modal("show");
+            var idModal = $(this).attr('id');
 
-            return false;
+            if (idModal == 'equipment') {
+
+                $("#equipmentManagerModal").modal("show");
+
+            } else if(idModal == 'maintenance') {
+
+
+            } else if(idModal == 'assignments') {
+
+                $("#assignmentsModal").modal("show");
+
+            } else if(idModal == 'assignments_historial') {
+
+                $("#assignmentsHistorialModal").modal("show");
+
+            } else if(idModal == 'persons') {
+
+
+
+            }
+
         });
+
+        $('#createEquipmentSource').click(function(event) {
+
+            $scope.equipmentCrud = {};
+
+            $scope.$apply();
+
+            $("#equipmentManagerModal").modal("hide");
+
+            $("#createEquipmentModal").modal("show");
+
+        });
+
+        $('#createEquipmentModal, #updateEquipmentModal').on('hidden.bs.modal', function () {
+
+            $("#equipmentManagerModal").modal("show");
+
+        });
+
+    }
+
+    function initAssignments() {
 
         $http({
             method: 'GET',
@@ -41,11 +90,11 @@ app.controller('biomedicalController', function ($scope, $http) {
 
         });
 
-    });
-    
+    }
+
     $scope.typeAction = function() {
 
-        var table = $("#bootstrap_table");
+        var table = $("#equipment_table");
         var selections = table.bootstrapTable('getSelections');
 
         if (selections.length) {
@@ -62,7 +111,7 @@ app.controller('biomedicalController', function ($scope, $http) {
             alert('Por favor establezca uno o más equipos');
 
         }
-        
+
     };
 
     $scope.open = function() {
@@ -287,11 +336,14 @@ app.controller('biomedicalController', function ($scope, $http) {
                                 'success'
                             );
 
-                            var table = $("#bootstrap_table");
-
                             angular.forEach($scope.equipment, function(equipment, key) {
 
-                                table.bootstrapTable('remove', {
+                                $("#equipment_table").bootstrapTable('remove', {
+                                    field: 'id',
+                                    values: [equipment.id]
+                                });
+
+                                $("#equipment_manager_table").bootstrapTable('remove', {
                                     field: 'id',
                                     values: [equipment.id]
                                 });
@@ -376,7 +428,7 @@ app.controller('biomedicalController', function ($scope, $http) {
                                 'success'
                             );
 
-                            var table = $("#bootstrap_table");
+                            var table = $("#equipment_table");
 
                             angular.forEach($scope.equipment, function(equipment, key) {
 
@@ -462,15 +514,18 @@ app.controller('biomedicalController', function ($scope, $http) {
                 if (response.data == "true") {
 
                     swal(
-                        'Deleted!',
-                        'Your file has been deleted.',
+                        'Eliminado!',
+                        'La asignación ha sido eliminada.',
                         'success'
                     );
 
                     $scope.assignments.splice(index, 1);
 
-                    var table = $("#bootstrap_table");
-                    var selections = table.bootstrapTable('refresh');
+                    $("#equipment_table").bootstrapTable('refresh');
+
+                    $("#equipment_manager_table").bootstrapTable('refresh');
+
+                    $("#assignments_table").bootstrapTable('refresh');
 
                 } else {
 
@@ -497,4 +552,227 @@ app.controller('biomedicalController', function ($scope, $http) {
         $scope.typePerson = null;
     };
 
+    /* CRUD Equipo */
+
+    $scope.addEquipment = function () {
+
+        $http({
+            method: 'POST',
+            url: '/create/equipo/',
+            data: {
+                equipmentCrud: JSON.stringify($scope.equipmentCrud)
+            },
+            dataType: 'JSON',
+        }).then(function (response) {
+
+            console.log(response);
+
+            if (response.statusText == "OK") {
+
+                swal(
+                    'Datos guardados satisfactoriamente!',
+                    'Verifique el nuevo equipo!',
+                    'success'
+                );
+
+                $("#equipment_table").bootstrapTable('refresh');
+
+                $("#equipment_manager_table").bootstrapTable('refresh');
+
+                $('#createEquipmentModal').modal('hide');
+
+                setTimeout(function () {
+                    $("#equipmentManagerModal").modal("show");
+                }, 100);
+
+            } else {
+
+                swal(
+                    'No se han podido guardar los datos!',
+                    'Algo ha salido mal...!',
+                    'error'
+                );
+
+            }
+
+        }, function (response) {
+
+            console.log("something went wrong");
+
+            swal(
+                'No se han podido guardar los datos!',
+                'Algo ha salido mal...!',
+                'error'
+            );
+
+        });
+
+        $scope.equipmentCrud = {};
+
+
+    };
+
+    $scope.deleteEquipment = function (row, index) {
+
+        swal({
+            title: 'Estás seguro?',
+            text: "No podrás revertir esta acción!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, elimínalo!'
+        }).then(function () {
+
+            console.log('Deleting');
+
+            var equipment = row;
+
+            $http({
+                method: 'POST',
+                url: '/delete/equipo/',
+                data: {
+                    equipmentCrud: JSON.stringify(equipment)
+                },
+                dataType: 'JSON',
+            }).then(function (response) {
+
+                if (response.data == "true") {
+
+                    swal(
+                        'Eliminado!',
+                        'El equipo ha sido eliminado.',
+                        'success'
+                    );
+
+                    $("#equipment_table").bootstrapTable('refresh');
+
+                    $("#equipment_manager_table").bootstrapTable('refresh');
+
+                } else {
+
+                    alert("No se ha podido eliminar :/");
+
+                }
+
+            }, function (response) {
+
+                console.log("something went wrong");
+
+            });
+
+        });
+
+    };
+
+    $scope.currentEquipment = {};
+
+    $scope.updateEquipment = function () {
+
+        $http({
+            method: 'POST',
+            url: '/update/equipo/',
+            data: {
+                equipmentCrud: JSON.stringify($scope.equipmentCrud)
+            },
+            dataType: 'JSON',
+        }).then(function (response) {
+
+            if (response.data == "true") {
+
+                swal(
+                    'Editado!',
+                    'El equipo ha sido editado.',
+                    'success'
+                );
+
+                $("#equipment_table").bootstrapTable('refresh');
+
+                $("#equipment_manager_table").bootstrapTable('refresh');
+
+                $('#updateEquipmentModal').modal('hide');
+
+                setTimeout(function () {
+                    $("#equipmentManagerModal").modal("show");
+                }, 400);
+            } else {
+
+                alert("No se ha podido eliminar :/");
+
+            }
+
+        }, function (response) {
+
+            console.log("something went wrong");
+
+        });
+
+    };
+
+    $scope.openUpdateEquipment = function (row, index) {
+
+        console.log("Editando");
+
+        $("#equipmentManagerModal").modal("hide");
+        $("#updateEquipmentModal").modal("show");
+
+        console.log(row);
+
+        $scope.currentEquipment = {
+            id: row.id,
+            nombre: row.Nombre,
+            marca: row.Marca,
+            modelo: row.Modelo,
+            serie: row.NumeroSerie,
+            inventario: row.NumeroInventario
+        };
+
+        $scope.equipmentCrud = $scope.currentEquipment;
+
+        $scope.$apply();
+
+    };
+
 });
+
+function deleteFormatter(value, row, index) {
+    return [
+        '<button class="btn btn-danger delete" href="javascript:void(0)">',
+            'Eliminar',
+        '</button>'
+    ].join('');
+}
+
+function editFormatter(value, row, index) {
+    return [
+        '<button class="btn btn-primary edit" href="javascript:void(0)">',
+        'Editar',
+        '</button>'
+    ].join('');
+}
+
+window.operateEvents = {
+
+    'click .delete': function (e, value, row, index) {
+
+        var biomedicalApp = getApp('biomedicalApp');
+
+        biomedicalApp.deleteEquipment(row, index);
+        
+    },
+    'click .edit': function (e, value, row, index) {
+
+        var biomedicalApp = getApp('biomedicalApp');
+
+        biomedicalApp.openUpdateEquipment(row, index);
+
+    }
+};
+
+function getApp(app) {
+
+    return angular.element(
+        $('[ng-app = ' + app + ']')
+    ).scope().$$childHead;
+
+}

@@ -2,7 +2,7 @@
 
 @section('javascript')
     <script src="lib/sweet/sweetalert2.min.js"></script>
-    <script src="js/home.js"></script>
+    <script src="js/home/home.js"></script>
 @stop
 
 @section('stylesheets')
@@ -12,7 +12,9 @@
 
 @section('content')
     <div ng-app="biomedicalApp" ng-controller="biomedicalController">
-        <div class="modal fade bd-example-modal-lg" id="assignmentsModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
+        {{-- Modal de asignaciones pendientes --}}
+        <div class="modal fade" id="assignmentsModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -21,7 +23,7 @@
                             <div class="col-lg-12">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <h2 style="color: darkslategrey">Lista de asignaciones pendientes de entrega:</h2>
+                                        <h2>Lista de asignaciones pendientes de entrega:</h2>
                                     </div>
                                     <div class="panel-body">
                                         <table class="table">
@@ -29,6 +31,7 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Equipo</th>
+                                                <th>EquipoID</th>
                                                 <th>Persona</th>
                                                 <th>Responsable</th>
                                                 <th>Estado</th>
@@ -39,11 +42,11 @@
                                             <tr ng-repeat="assignment in assignments track by $index">
                                                 <td>@{{assignment.id}}</td>
                                                 <td>@{{assignment.equipo}}</td>
+                                                <td><strong>@{{assignment.idEquipo}}</strong></td>
                                                 <td>@{{assignment.persona}}</td>
                                                 <td>@{{assignment.responsable}}</td>
                                                 <td>@{{assignment.estado}}</td>
                                                 <td ng-if="assignment.estado == 'activo'"><input type="button" ng-click="delete($index)" class="btn btn-danger btn-sm" value="Eliminar"></td>
-                                                <td ng-if="assignment.estado != 'activo'"><input ng-disabled="true" type="button" ng-click="ver($index)" class="btn btn-danger btn-sm" value="Ver"></td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -58,7 +61,62 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="typeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+
+        {{-- Modal de historial de asignaciones no pendientes --}}
+        <div class="modal fade" id="assignmentsHistorialModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Historial de asignaciones</h4>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h2 style="color: darkslategrey">Historial de asignaciones finalizadas:</h2>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table id="assignments_table"
+                                               data-toggle="table"
+                                               data-url="/search/asignaciones/historial"
+                                               data-show-refresh="true"
+                                               data-show-toggle="true"
+                                               data-show-columns="true"
+                                               data-show-export="true"
+                                               data-detail-view="true"
+                                               data-search="true"
+                                               data-pagination="true"
+                                               data-sort-name="name"
+                                               data-sort-order="desc"
+                                               data-page-list="[5, 6, 10, 25, 50, 100]"
+                                               data-page-size="6"
+                                               data-click-to-select="true">
+                                            <thead>
+                                            <tr>
+                                                {{--<th data-checkbox="true" >ID</th>--}}
+                                                <th data-field="id" data-sortable="true">ID</th>
+                                                <th data-field="equipo"  data-sortable="true">Equipo</th>
+                                                <th data-field="idEquipo"  data-sortable="true">EquipoID</th>
+                                                <th data-field="persona" data-sortable="true">Persona</th>
+                                                <th data-field="responsable" data-sortable="true">Responsable</th>
+                                                <th data-field="fecha" data-sortable="true">Fecha</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                        <button class="btn btn-primary" type="button" ng-click="typeAction()">Asignar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Modal de tipo de persona --}}
+        <div class="modal fade" id="typeModal" tabindex="-1">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -84,7 +142,9 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="equipmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+
+        {{-- Modal de asignacion de equipo y personas --}}
+        <div class="modal fade" id="equipmentModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -287,6 +347,182 @@
                 </div>
             </div>
         </div>
+
+        {{-- Modal de asignaciones administrador de equipos --}}
+        <div class="modal fade" id="equipmentManagerModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Administrador de equipos</h4>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h2>Tabla de equipos disponibles en almacén:</h2>
+                                    </div>
+                                    <div class="panel-body">
+
+                                        <table id="equipment_manager_table"
+                                            data-toggle="table"
+                                            data-url="/search/equipos/"
+                                            data-show-refresh="true"
+                                            data-show-toggle="true"
+                                            data-show-columns="true"
+                                            data-show-export="true"
+                                            data-detail-view="true"
+                                            data-search="true"
+                                            data-pagination="true"
+                                            data-sort-name="name"
+                                            data-sort-order="desc"
+                                            data-page-list="[5, 6, 10, 25, 50, 100]"
+                                            data-page-size="6"
+                                            data-click-to-select="true">
+                                            <thead>
+                                            <tr>
+                                                <th data-field="id" data-sortable="true">ID</th>
+                                                <th data-field="Nombre"  data-sortable="true">Nombre</th>
+                                                <th data-field="Marca" data-sortable="true">Marca</th>
+                                                <th data-field="Modelo" data-sortable="true">Modelo</th>
+                                                <th data-field="NumeroSerie" data-sortable="true">No. Serie</th>
+                                                <th data-field="NumeroInventario" data-sortable="true">No. Inventario</th>
+                                                <th data-formatter="editFormatter" data-events="operateEvents">Editar</th>
+                                                <th data-formatter="deleteFormatter" data-events="operateEvents">Eliminar</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="createEquipmentSource" class="btn btn-success">Crear un equipo</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {{-- Crear un equipo --}}
+        <div class="modal fade" id="createEquipmentModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Administrador de equipos
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="panel-body">
+                                            <h2>Crear equipo</h2>
+                                            <form ng-submit="addEquipment()">
+                                                <div class="form-group">
+                                                    <label for="name">Nombre:</label>
+                                                    <input type="text" class="form-control" id="name" placeholder="Introducir nombre" required ng-model="equipmentCrud.nombre">
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                        <label for="marca">Marca:</label>
+                                                        <input type="text" class="form-control" id="marca" placeholder="Introducir marca" required ng-model="equipmentCrud.marca">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                        <label for="modelo">Modelo:</label>
+                                                        <input type="text" class="form-control" id="modelo" placeholder="Introducir modelo" required ng-model="equipmentCrud.modelo">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                        <label for="serie">No. Serie:</label>
+                                                        <input type="text" class="form-control" id="serie" placeholder="Introducir No. Serie" required ng-model="equipmentCrud.serie">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                        <label for="inventario">No. Inventario:</label>
+                                                        <input type="text" class="form-control" id="inventario" placeholder="Introducir No. Inventario" required ng-model="equipmentCrud.inventario">
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        {{--<a href="#" ng-click="resetVariables()" data-dismiss="modal" class="btn btn-danger">Cerrar</a>--}}
+                        <a href="#" data-dismiss="modal" class="btn btn-danger">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Editar un equipo --}}
+        <div class="modal fade" id="updateEquipmentModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Administrador de equipos
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="panel-body">
+                                            <h2>Editar equipo</h2>
+                                            <form ng-submit="updateEquipment()">
+                                                <div class="form-group">
+                                                    <label for="name">Nombre:</label>
+                                                    <input type="text" class="form-control" id="name" placeholder="Introducir nombre" required ng-model="equipmentCrud.nombre">
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                        <label for="marca">Marca:</label>
+                                                        <input type="text" class="form-control" id="marca" placeholder="Introducir marca" required ng-model="equipmentCrud.marca">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                        <label for="modelo">Modelo:</label>
+                                                        <input type="text" class="form-control" id="modelo" placeholder="Introducir modelo" required ng-model="equipmentCrud.modelo">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                        <label for="serie">No. Serie:</label>
+                                                        <input type="text" class="form-control" id="serie" placeholder="Introducir No. Serie" required ng-model="equipmentCrud.serie">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                        <label for="inventario">No. Inventario:</label>
+                                                        <input type="text" class="form-control" id="inventario" placeholder="Introducir No. Inventario" required ng-model="equipmentCrud.inventario">
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        {{--<a href="#" ng-click="resetVariables()" data-dismiss="modal" class="btn btn-danger">Cerrar</a>--}}
+                        <a href="#" data-dismiss="modal" class="btn btn-danger">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Tabla de equipos disponibles --}}
         <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
             <div class="row">
                 <ol class="breadcrumb">
@@ -304,32 +540,42 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Tabla de equipos:</div>
                         <div class="panel-body">
-                            <form>
-                                <table id="bootstrap_table" data-toggle="table" data-url="/search/equipos/"  data-show-refresh="true"data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" data-click-to-select="true" >
-                                    <thead>
-                                    <tr>
-                                        <th data-checkbox="true" >ID</th>
-                                        <th data-field="id" data-sortable="true">ID</th>
-                                        <th data-field="Nombre"  data-sortable="true">Nombre</th>
-                                        <th data-field="Marca" data-sortable="true">Marca</th>
-                                        <th data-field="Modelo" data-sortable="true">Modelo</th>
-                                        <th data-field="NumeroSerie" data-sortable="true">No. Serie</th>
-                                        <th data-field="NumeroInventario" data-sortable="true">No. Inventario</th>
-                                        <th data-field="Observaciones" data-sortable="true">Observaciones</th>
-                                        <th data-field="Estado" data-sortable="true">Estado</th>
-                                    </tr>
-                                    </thead>
-                                </table>
-                                <button class="btn btn-primary" type="button" ng-click="typeAction()">Asignar</button>
-                            </form>
+                            <table id="equipment_table"
+                                   data-toggle="table"
+                                   data-url="/search/equipos/"
+                                   data-show-refresh="true"
+                                   data-show-toggle="true"
+                                   data-show-columns="true"
+                                   data-search="true"
+                                   data-select-item-name="toolbar1"
+                                   data-pagination="true"
+                                   data-sort-name="name"
+                                   data-sort-order="desc"
+                                   data-click-to-select="true" >
+                                <thead>
+                                <tr>
+                                    <th data-checkbox="true" >ID</th>
+                                    <th data-field="id" data-sortable="true">ID</th>
+                                    <th data-field="Nombre"  data-sortable="true">Nombre</th>
+                                    <th data-field="Marca" data-sortable="true">Marca</th>
+                                    <th data-field="Modelo" data-sortable="true">Modelo</th>
+                                    <th data-field="NumeroSerie" data-sortable="true">No. Serie</th>
+                                    <th data-field="NumeroInventario" data-sortable="true">No. Inventario</th>
+                                    <th data-field="Observaciones" data-sortable="true">Observaciones</th>
+                                    <th data-field="Estado" data-sortable="true">Estado</th>
+                                </tr>
+                                </thead>
+                            </table>
+                            <button class="btn btn-primary" type="button" ng-click="typeAction()">Asignar</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
             <ul class="nav menu">
-                <li class="">
+                <li>
                     <a href="/">
                         <svg class="glyph stroked table">
                             <use xlink:href="#stroked-table"></use>
@@ -337,10 +583,34 @@
                         Control de equipos
                     </a>
                 </li>
-                <li class="">
-                    <a id="assignments" href="/">
+                <li>
+                    <a id="equipment" class="modal-click" href="#">
+                        <svg class="glyph stroked desktop computer and mobile"><use xlink:href="#stroked-desktop-computer-and-mobile"/></svg>
+                        Administrador de equipos
+                    </a>
+                </li>
+                <li>
+                    <a id="persons" class="modal-click" href="#">
+                        <svg class="glyph stroked male user "><use xlink:href="#stroked-male-user"/></svg>
+                        Administrador de personas
+                    </a>
+                </li>
+                <li>
+                    <a id="maintenance" class="modal-click" href="#">
+                        <svg class="glyph stroked hourglass"><use xlink:href="#stroked-hourglass"/></svg>
+                        Mantenimiento de equipos
+                    </a>
+                </li>
+                <li>
+                    <a id="assignments" class="modal-click" href="#">
                         <svg class="glyph stroked clock"><use xlink:href="#stroked-clock"/></svg>
-                        Registro de asignaciones
+                        Asignaciones pendientes
+                    </a>
+                </li>
+                <li>
+                    <a id="assignments_historial" class="modal-click" href="#">
+                        <svg class="glyph stroked eye"><use xlink:href="#stroked-eye"/></svg>
+                        Historial de asignaciones
                     </a>
                 </li>
             </ul>
