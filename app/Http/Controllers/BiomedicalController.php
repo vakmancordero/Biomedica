@@ -10,11 +10,15 @@ use App;
 class BiomedicalController extends Controller {
 
     public function equipos() {
-        return App\Equipo::where('Estado', '!=', 'En uso')->get();
+        return App\Equipo::where('Estado', '!=', 'En uso')->where('Estado', '!=', 'En mantenimiento')->get();
     }
 
     public function personas(Request $request, $number) {
         return App\Persona::where('matricula', $number)->first();
+    }
+
+    public function equipos_maintenance() {
+        return App\Equipo::where('Estado', 'En mantenimiento')->get();
     }
 
     public function asignaciones() {
@@ -28,9 +32,9 @@ class BiomedicalController extends Controller {
                 'persona' => $personaEquipo->persona->nombre . " [" . $personaEquipo->persona->matricula . "]",
                 'responsable' => $personaEquipo->responsable->nombre . " [" . $personaEquipo->responsable->matricula . "]",
                 'equipo' => $personaEquipo->equipo->Nombre . " - " .
-                            $personaEquipo->equipo->Marca  . " - " .
-                            $personaEquipo->equipo->Modelo  . " - " .
-                            $personaEquipo->equipo->NumeroInventario,
+                    $personaEquipo->equipo->Marca  . " - " .
+                    $personaEquipo->equipo->Modelo  . " - " .
+                    $personaEquipo->equipo->NumeroInventario,
                 'estado' => $personaEquipo->status,
                 'idEquipo' => $personaEquipo->equipo->id
             ];
@@ -230,8 +234,8 @@ class BiomedicalController extends Controller {
     public function testa() {
 
         $least = DB::select(
-                'SELECT * FROM (SELECT personaequipo.idEquipo, Count(personaequipo.idEquipo) AS counter
-                 FROM personaequipo GROUP BY personaEquipo.idEquipo) a ORDER BY counter asc limit 5;'
+            'SELECT * FROM (SELECT idEquipo, Count(idEquipo) AS counter
+                 FROM personaequipo GROUP BY idEquipo) a ORDER BY counter asc limit 5;'
         );
 
         $array = json_decode(json_encode($least), True);
@@ -243,7 +247,7 @@ class BiomedicalController extends Controller {
             $equipment = App\Equipo::find($record['idEquipo']);
 
             $object = (object)[
-                'nombre' => $equipment->NumeroSerie,
+                'nombre' => $equipment->NumeroInventario . ' - ' . $equipment->id,
                 'counter' => $record['counter']
             ];
 
@@ -252,8 +256,8 @@ class BiomedicalController extends Controller {
         }
 
         $most = DB::select(
-                'SELECT * FROM (SELECT personaequipo.idEquipo, Count(personaequipo.idEquipo) AS counter
-                 FROM personaequipo GROUP BY personaEquipo.idEquipo) a ORDER BY counter desc limit 5;'
+            'SELECT * FROM (SELECT idEquipo, Count(idEquipo) AS counter
+                 FROM personaequipo GROUP BY idEquipo) a ORDER BY counter desc limit 5;'
         );
 
         $array = json_decode(json_encode($most), True);
@@ -265,7 +269,7 @@ class BiomedicalController extends Controller {
             $equipment = App\Equipo::find($record['idEquipo']);
 
             $object = (object)[
-                'nombre' => $equipment->NumeroSerie,
+                'nombre' => $equipment->NumeroInventario . ' - ' . $equipment->id,
                 'counter' => $record['counter']
             ];
 
@@ -291,5 +295,40 @@ class BiomedicalController extends Controller {
 //        ];
 
     }
+
+    protected function createMaintenance(Request $request) {
+
+        $equipment = json_decode($request->input('equipment'), true);
+
+        foreach ($equipment as $item) {
+
+            $idEquipment = $item['id'];
+
+            $equipmentFound = App\Equipo::find($idEquipment);
+
+            $equipmentFound->Estado = 'En mantenimiento';
+            $equipmentFound->save();
+
+        }
+
+        return "true";
+    }
+
+    protected function deleteMaintenance(Request $request) {
+
+        $equipment = json_decode($request->input('equipment'), true);
+
+        $idEquipment = $equipment['id'];
+
+        $equipmentFound = App\Equipo::find($idEquipment);
+
+        $equipmentFound->Estado = "";
+        $equipmentFound->save();
+
+
+        return "true";
+    }
+
+
 
 }

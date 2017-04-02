@@ -16,6 +16,9 @@ Route::get('/', function () {
 });
 
 Route::get('/search/equipos', 'BiomedicalController@equipos');
+
+Route::get('/search/equipos/maintenance', 'BiomedicalController@equipos_maintenance');
+
 Route::get('/search/testa', 'BiomedicalController@testa');
 
 Route::get('/search/personas/{number}', array('as'=>'test','uses'=>'BiomedicalController@personas'));
@@ -27,6 +30,10 @@ Route::get('/search/asignaciones/historial', 'BiomedicalController@historial');
 Route::post('/create/persona', 'BiomedicalController@store_persona');
 
 Route::post('/create/asignacion', 'BiomedicalController@store_asignacion');
+
+Route::post('/create/maintenance', 'BiomedicalController@createMaintenance');
+
+Route::post('/delete/maintenance', 'BiomedicalController@deleteMaintenance');
 
 Route::post('/delete/asignacion', 'BiomedicalController@delete_asignacion');
 

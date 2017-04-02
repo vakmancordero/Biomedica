@@ -89,6 +89,7 @@ app.controller('biomedicalController', function ($scope, $http) {
 
             } else if(idModal == 'maintenance') {
 
+                $("#maintenanceModal").modal("show");
 
             } else if(idModal == 'assignments') {
 
@@ -100,11 +101,7 @@ app.controller('biomedicalController', function ($scope, $http) {
 
             } else if(idModal == 'persons') {
 
-
-
-            } else if(idModal == 'equipment_graphic') {
-
-                $("#equipmentGraphicModal").modal("show");
+                console.log("Modulo no finalizado");
 
             }
 
@@ -121,6 +118,84 @@ app.controller('biomedicalController', function ($scope, $http) {
             $("#createEquipmentModal").modal("show");
 
         });
+
+        $('#watchMaintenanceSource').click(function(event) {
+
+            $("#maintenanceModal").modal("hide");
+
+            $("#watch_maintenanceModal").modal("show");
+
+
+        });
+
+        $('#sendMaintenanceSource').click(function(event) {
+
+            var selections = $("#equipment_maintenance_table").bootstrapTable('getSelections');
+
+            if (selections.length) {
+
+                swal({
+                    title: 'Estás seguro?',
+                    text: "Enviarás a mantenimiento el/los equipo(s) seleccionado(s)!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, envíalos'
+                }).then(function () {
+
+                    $http({
+                        method: 'POST',
+                        url: '/create/maintenance/',
+                        data: {
+                            equipment: JSON.stringify(selections)
+                        },
+                        dataType: 'JSON',
+                    }).then(function (response) {
+
+                        if (response.data == "true") {
+
+                            swal(
+                                'Correcto!',
+                                'Equipo enviado a mantenimiento.',
+                                'success'
+                            );
+
+                            $("#equipment_maintenance_watch_table").bootstrapTable('refresh');
+                            $("#equipment_maintenance_table").bootstrapTable('refresh');
+                            $("#equipment_table").bootstrapTable('refresh');
+                            $("#equipment_manager_table").bootstrapTable('refresh');
+                            $("#assignments_table").bootstrapTable('refresh');
+
+                        } else {
+
+                            alert("No se han podido enviar los datos :/");
+
+                        }
+
+                    }, function (response) {
+
+                        console.log("something went wrong");
+
+                    });
+
+                });
+
+
+            } else {
+
+                alert('Por favor establezca uno o más equipos');
+
+            }
+
+            console.log();
+
+            // $("#equipmentManagerModal").modal("hide");
+            // $("#createEquipmentModal").modal("show");
+
+        });
+
+
 
         $('#createEquipmentModal, #updateEquipmentModal').on('hidden.bs.modal', function () {
 
@@ -766,6 +841,63 @@ app.controller('biomedicalController', function ($scope, $http) {
 
     };
 
+
+
+    $scope.removeMaintenanceEquipment = function (row, index) {
+
+        console.log("Eliminando");
+
+        swal({
+            title: 'Estás seguro?',
+            text: "No podrás revertir esta acción!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, elimínalo!'
+        }).then(function () {
+
+            $http({
+                method: 'POST',
+                url: '/delete/maintenance/',
+                data: {
+                    equipment: JSON.stringify(row)
+                },
+                dataType: 'JSON',
+            }).then(function (response) {
+
+                if (response.data == "true") {
+
+                    swal(
+                        'Eliminado!',
+                        'El equipo ha sido removido de mantenimiento.',
+                        'success'
+                    );
+
+                    $("#equipment_maintenance_watch_table").bootstrapTable('refresh');
+                    $("#equipment_maintenance_table").bootstrapTable('refresh');
+                    $("#equipment_table").bootstrapTable('refresh');
+                    $("#equipment_manager_table").bootstrapTable('refresh');
+                    $("#assignments_table").bootstrapTable('refresh');
+
+                } else {
+
+                    alert("No se ha podido eliminar :/");
+
+                }
+
+            }, function (response) {
+
+                console.log("something went wrong");
+
+            });
+
+        });
+
+        $scope.$apply();
+
+    };
+
     $scope.openUpdateEquipment = function (row, index) {
 
         console.log("Editando");
@@ -808,6 +940,14 @@ function editFormatter(value, row, index) {
     ].join('');
 }
 
+function deleteMaintenanceFormatter(value, row, index) {
+    return [
+        '<button class="btn btn-primary maintenanceEdit" href="javascript:void(0)">',
+        'Remover',
+        '</button>'
+    ].join('');
+}
+
 window.operateEvents = {
 
     'click .delete': function (e, value, row, index) {
@@ -822,6 +962,13 @@ window.operateEvents = {
         var biomedicalApp = getApp('biomedicalApp');
 
         biomedicalApp.openUpdateEquipment(row, index);
+
+    },
+    'click .maintenanceEdit': function (e, value, row, index) {
+
+        var biomedicalApp = getApp('biomedicalApp');
+
+        biomedicalApp.removeMaintenanceEquipment(row, index);
 
     }
 };

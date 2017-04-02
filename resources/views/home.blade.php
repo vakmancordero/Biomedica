@@ -348,7 +348,7 @@
             </div>
         </div>
 
-        {{-- Modal de asignaciones administrador de equipos --}}
+        {{-- Modal de administrador de equipos --}}
         <div class="modal fade" id="equipmentManagerModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -598,9 +598,8 @@
             </div>
         </div>
 
-
-        {{-- Modal de gráfica de utilización de equipos --}}
-        <div class="modal fade" id="equipmentGraphicModal" tabindex="-1">
+        {{-- Modal de mantenimiento de equipos --}}
+        <div class="modal fade" id="maintenanceModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -608,32 +607,100 @@
                             <div class="col-lg-12">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        Gráfica de utilización
+                                        <h2>Tabla de equipos en mantenimiento:</h2>
                                     </div>
                                     <div class="panel-body">
-                                        <div class="panel-body">
-                                            <h2>Gráfica de barras</h2>
 
-                                            {{--<div class="row">--}}
-                                                {{--<div class="col-lg-12">--}}
-                                                    {{--<div class="panel panel-default">--}}
-                                                        {{--<div class="panel-heading">Bar Chart</div>--}}
-                                                        {{--<div class="panel-body">--}}
-                                                            {{--<div class="canvas-wrapper">--}}
-                                                                {{--<canvas class="main-chart" id="bar-chart" height="200" width="600"></canvas>--}}
-                                                            {{--</div>--}}
-                                                        {{--</div>--}}
-                                                    {{--</div>--}}
-                                                {{--</div>--}}
-                                            {{--</div>--}}
-                                        </div>
+                                        <table id="equipment_maintenance_table"
+                                               data-toggle="table"
+                                               data-url="/search/equipos/"
+                                               data-show-refresh="true"
+                                               data-show-toggle="true"
+                                               data-show-columns="true"
+                                               data-show-export="true"
+                                               data-detail-view="true"
+                                               data-search="true"
+                                               data-pagination="true"
+                                               data-sort-name="name"
+                                               data-sort-order="desc"
+                                               data-page-list="[5, 6, 10, 25, 50, 100]"
+                                               data-page-size="6"
+                                               data-click-to-select="true">
+                                            <thead>
+                                            <tr>
+                                                <th data-checkbox="true" >ID</th>
+                                                <th data-field="id" data-sortable="true">ID</th>
+                                                <th data-field="Nombre"  data-sortable="true">Nombre</th>
+                                                <th data-field="Marca" data-sortable="true">Marca</th>
+                                                <th data-field="Modelo" data-sortable="true">Modelo</th>
+                                                <th data-field="NumeroSerie" data-sortable="true">No. Serie</th>
+                                                <th data-field="NumeroInventario" data-sortable="true">No. Inventario</th>
+                                                {{--<th data-formatter="editFormatter" data-events="operateEvents">Editar</th>--}}
+                                                {{--<th data-formatter="deleteFormatter" data-events="operateEvents">Eliminar</th>--}}
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="sendMaintenanceSource" class="btn btn-success">Enviar a mantenimiento</button>
+                        <button id="watchMaintenanceSource" class="btn btn-primary">Ver equipos en mantenimiento</button>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" data-dismiss="modal" class="btn btn-danger">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Modal ver mantenimiento de equipos pendientes --}}
+        <div class="modal fade" id="watch_maintenanceModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h2>Tabla de equipos en mantenimiento:</h2>
+                                    </div>
+                                    <div class="panel-body">
+
+                                        <table id="equipment_maintenance_watch_table"
+                                               data-toggle="table"
+                                               data-url="/search/equipos/maintenance"
+                                               data-show-refresh="true"
+                                               data-show-toggle="true"
+                                               data-show-columns="true"
+                                               data-show-export="true"
+                                               data-detail-view="true"
+                                               data-search="true"
+                                               data-pagination="true"
+                                               data-sort-name="name"
+                                               data-sort-order="desc"
+                                               data-page-list="[5, 6, 10, 25, 50, 100]"
+                                               data-page-size="6"
+                                               data-click-to-select="true">
+                                            <thead>
+                                            <tr>
+                                                <th data-field="id" data-sortable="true">ID</th>
+                                                <th data-field="Nombre"  data-sortable="true">Nombre</th>
+                                                <th data-field="Marca" data-sortable="true">Marca</th>
+                                                <th data-field="Modelo" data-sortable="true">Modelo</th>
+                                                <th data-field="NumeroSerie" data-sortable="true">No. Serie</th>
+                                                <th data-field="NumeroInventario" data-sortable="true">No. Inventario</th>
+                                                {{--<th data-formatter="editFormatter" data-events="operateEvents">Editar</th>--}}
+                                                <th data-formatter="deleteMaintenanceFormatter" data-events="operateEvents">Remover</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        {{--<a href="#" ng-click="resetVariables()" data-dismiss="modal" class="btn btn-danger">Cerrar</a>--}}
                         <a href="#" data-dismiss="modal" class="btn btn-danger">Cerrar</a>
                     </div>
                 </div>
@@ -656,12 +723,12 @@
                         Administrador de equipos
                     </a>
                 </li>
-                <li>
-                    <a id="persons" class="modal-click" href="#">
-                        <svg class="glyph stroked male user "><use xlink:href="#stroked-male-user"/></svg>
-                        Administrador de personas
-                    </a>
-                </li>
+                {{--<li>--}}
+                    {{--<a id="persons" class="modal-click" href="#">--}}
+                        {{--<svg class="glyph stroked male user "><use xlink:href="#stroked-male-user"/></svg>--}}
+                        {{--Administrador de personas--}}
+                    {{--</a>--}}
+                {{--</li>--}}
                 <li>
                     <a id="maintenance" class="modal-click" href="#">
                         <svg class="glyph stroked hourglass"><use xlink:href="#stroked-hourglass"/></svg>
@@ -678,12 +745,6 @@
                     <a id="assignments_historial" class="modal-click" href="#">
                         <svg class="glyph stroked eye"><use xlink:href="#stroked-eye"/></svg>
                         Historial de asignaciones
-                    </a>
-                </li>
-                <li>
-                    <a id="equipment_graphic" class="modal-click" href="#">
-                        <svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg>
-                        Gráfica de utilización de equipos
                     </a>
                 </li>
             </ul>
