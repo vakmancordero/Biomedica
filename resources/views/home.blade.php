@@ -136,7 +136,6 @@
                                             </tr>
                                             </thead>
                                         </table>
-                                        <button class="btn btn-primary" type="button" ng-click="typeAction()">Asignar</button>
                                     </div>
                                 </div>
                             </div>

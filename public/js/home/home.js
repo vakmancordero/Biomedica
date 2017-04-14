@@ -157,7 +157,7 @@ app.controller('biomedicalController', function ($scope, $http) {
 
                             swal(
                                 'Eliminadas!',
-                                'Laa asignaciones han sido eliminadas.',
+                                'Las asignaciones han sido eliminadas.',
                                 'success'
                             );
 
@@ -286,8 +286,15 @@ app.controller('biomedicalController', function ($scope, $http) {
 
     $scope.typeAction = function() {
 
+
         var table = $("#equipment_table");
+
+        table.bootstrapTable('resetSearch', '');
+
         var selections = table.bootstrapTable('getSelections');
+
+        console.log(selections);
+        console.log(selections.length);
 
         if (selections.length) {
 
@@ -615,6 +622,8 @@ app.controller('biomedicalController', function ($scope, $http) {
                         console.log(response);
 
                         if (response.statusText == "OK") {
+
+                            $("#removeAssignmentsTable").bootstrapTable('refresh');
 
                             swal(
                                 'Asignación guardada satisfactoriamente!',
