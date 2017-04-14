@@ -26,32 +26,65 @@
                                         <h2>Lista de asignaciones pendientes de entrega:</h2>
                                     </div>
                                     <div class="panel-body">
-                                        <table class="table">
-                                            <thead class="thead-inverse">
+                                        {{--<table class="table">--}}
+                                            {{--<thead class="thead-inverse">--}}
+                                            {{--<tr>--}}
+                                                {{--<th>ID</th>--}}
+                                                {{--<th>Equipo</th>--}}
+                                                {{--<th>EquipoID</th>--}}
+                                                {{--<th>Persona</th>--}}
+                                                {{--<th>Responsable</th>--}}
+                                                {{--<th>Estado</th>--}}
+                                                {{--<th>Eliminar</th>--}}
+                                            {{--</tr>--}}
+                                            {{--</thead>--}}
+                                            {{--<tbody>--}}
+                                            {{--<tr ng-repeat="assignment in assignments track by $index">--}}
+                                                {{--<td>@{{assignment.id}}</td>--}}
+                                                {{--<td>@{{assignment.equipo}}</td>--}}
+                                                {{--<td><strong>@{{assignment.idEquipo}}</strong></td>--}}
+                                                {{--<td>@{{assignment.persona}}</td>--}}
+                                                {{--<td>@{{assignment.responsable}}</td>--}}
+                                                {{--<td>@{{assignment.estado}}</td>--}}
+                                                {{--<td ng-if="assignment.estado == 'activo'"><input type="button" ng-click="delete($index)" class="btn btn-danger btn-sm" value="Eliminar"></td>--}}
+                                            {{--</tr>--}}
+                                            {{--</tbody>--}}
+                                        {{--</table>--}}
+                                        <table id="removeAssignmentsTable"
+                                               data-toggle="table"
+                                               data-url="/search/asignaciones/"
+                                               data-show-refresh="true"
+                                               data-show-toggle="true"
+                                               data-show-columns="true"
+                                               data-search="true"
+                                               data-select-item-name="toolbar1"
+                                               data-pagination="true"
+                                               data-sort-name="name"
+                                               data-sort-order="desc"
+                                               data-click-to-select="true"
+                                               data-maintain-selected="true">
+                                            <thead>
                                             <tr>
-                                                <th>ID</th>
-                                                <th>Equipo</th>
-                                                <th>EquipoID</th>
-                                                <th>Persona</th>
-                                                <th>Responsable</th>
-                                                <th>Estado</th>
-                                                <th>Eliminar</th>
+                                                <th data-checkbox="true" >ID</th>
+                                                <th data-field="id" data-sortable="true">ID</th>
+                                                <th data-field="equipo" data-sortable="true">Equipo</th>
+                                                <th data-field="idEquipo" data-sortable="true">EquipoID</th>
+                                                <th data-field="persona" data-sortable="true">Persona</th>
+                                                <th data-field="responsable" data-sortable="true">Responsable</th>
+                                                <th data-field="estado" data-sortable="true">Estado</th>
+                                                {{--<th data-field="Nombre"  data-sortable="true">Nombre</th>--}}
+                                                {{--<th data-field="Marca" data-sortable="true">Marca</th>--}}
+                                                {{--<th data-field="Modelo" data-sortable="true">Modelo</th>--}}
+                                                {{--<th data-field="NumeroSerie" data-sortable="true">No. Serie</th>--}}
+                                                {{--<th data-field="NumeroInventario" data-sortable="true">No. Inventario</th>--}}
+                                                {{--<th data-field="Observaciones" data-sortable="true">Observaciones</th>--}}
+                                                {{--<th data-field="Estado" data-sortable="true">Estado</th>--}}
                                             </tr>
                                             </thead>
-                                            <tbody>
-                                            <tr ng-repeat="assignment in assignments track by $index">
-                                                <td>@{{assignment.id}}</td>
-                                                <td>@{{assignment.equipo}}</td>
-                                                <td><strong>@{{assignment.idEquipo}}</strong></td>
-                                                <td>@{{assignment.persona}}</td>
-                                                <td>@{{assignment.responsable}}</td>
-                                                <td>@{{assignment.estado}}</td>
-                                                <td ng-if="assignment.estado == 'activo'"><input type="button" ng-click="delete($index)" class="btn btn-danger btn-sm" value="Eliminar"></td>
-                                            </tr>
-                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
+                                <button id="removeAssignments" class="btn btn-lg btn-success">Remover asignaciones</button>
                             </div>
                         </div>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -89,7 +122,8 @@
                                                data-sort-order="desc"
                                                data-page-list="[5, 6, 10, 25, 50, 100]"
                                                data-page-size="6"
-                                               data-click-to-select="true">
+                                               data-click-to-select="true"
+                                               data-maintain-selected="true">
                                             <thead>
                                             <tr>
                                                 {{--<th data-checkbox="true" >ID</th>--}}
@@ -363,20 +397,21 @@
                                     <div class="panel-body">
 
                                         <table id="equipment_manager_table"
-                                            data-toggle="table"
-                                            data-url="/search/equipos/"
-                                            data-show-refresh="true"
-                                            data-show-toggle="true"
-                                            data-show-columns="true"
-                                            data-show-export="true"
-                                            data-detail-view="true"
-                                            data-search="true"
-                                            data-pagination="true"
-                                            data-sort-name="name"
-                                            data-sort-order="desc"
-                                            data-page-list="[5, 6, 10, 25, 50, 100]"
-                                            data-page-size="6"
-                                            data-click-to-select="true">
+                                                data-toggle="table"
+                                                data-url="/search/equipos/"
+                                                data-show-refresh="true"
+                                                data-show-toggle="true"
+                                                data-show-columns="true"
+                                                data-show-export="true"
+                                                data-detail-view="true"
+                                                data-search="true"
+                                                data-pagination="true"
+                                                data-sort-name="name"
+                                                data-sort-order="desc"
+                                                data-page-list="[5, 6, 10, 25, 50, 100]"
+                                                data-page-size="6"
+                                                data-click-to-select="true"
+                                                data-maintain-selected="true">
                                             <thead>
                                             <tr>
                                                 <th data-field="id" data-sortable="true">ID</th>
@@ -550,7 +585,8 @@
                                    data-pagination="true"
                                    data-sort-name="name"
                                    data-sort-order="desc"
-                                   data-click-to-select="true" >
+                                   data-click-to-select="true"
+                                   data-maintain-selected="true">
                                 <thead>
                                 <tr>
                                     <th data-checkbox="true" >ID</th>
@@ -625,7 +661,8 @@
                                                data-sort-order="desc"
                                                data-page-list="[5, 6, 10, 25, 50, 100]"
                                                data-page-size="6"
-                                               data-click-to-select="true">
+                                               data-click-to-select="true"
+                                               data-maintain-selected="true">
                                             <thead>
                                             <tr>
                                                 <th data-checkbox="true" >ID</th>
@@ -681,7 +718,8 @@
                                                data-sort-order="desc"
                                                data-page-list="[5, 6, 10, 25, 50, 100]"
                                                data-page-size="6"
-                                               data-click-to-select="true">
+                                               data-click-to-select="true"
+                                               data-maintain-selected="true">
                                             <thead>
                                             <tr>
                                                 <th data-field="id" data-sortable="true">ID</th>

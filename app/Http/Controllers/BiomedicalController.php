@@ -20,7 +20,7 @@ class BiomedicalController extends Controller {
     public function equipos_maintenance() {
         return App\Equipo::where('Estado', 'En mantenimiento')->get();
     }
-
+	
     public function asignaciones() {
 
         $toReturnArr = [];
@@ -74,8 +74,8 @@ class BiomedicalController extends Controller {
     }
 
     public function store_asignacion(Request $request) {
-
-        $equipment = json_decode($request->input('equipment'), true);
+	
+	    $equipment = json_decode($request->input('equipment'), true);
         $persona = json_decode($request->input('person'), true);
 
         if ($persona['idTipoPersona'] == '2') {
@@ -171,20 +171,24 @@ class BiomedicalController extends Controller {
     }
 
     public function delete_asignacion(Request $request) {
-
-        $assignmentJSON = json_decode($request->input('assignment'), true);
-
-        $assignment = App\PersonaEquipo::find($assignmentJSON['id']);
-
-        $equipo = App\Equipo::find($assignmentJSON['idEquipo']);
-        $equipo->Estado = "";
-        $equipo->save();
-
-        $assignment->status = "";
-
-        $returnValue = $assignment->save();
-
-        return json_encode($returnValue);
+	
+	    $assignmentJSON = json_decode($request->input('assignment'), true);
+	
+	    foreach ($assignmentJSON as $item) {
+		
+		    $assignment = App\PersonaEquipo::find($item['id']);
+		    $equipo = App\Equipo::find($item['idEquipo']);
+		
+		    $equipo->Estado = "";
+		    $equipo->save();
+		
+		    $assignment->status = "";
+		    $assignment->save();
+		
+	    }
+	
+	    return json_encode(true);
+	    
     }
 
     public function delete_equipo(Request $request) {

@@ -128,6 +128,71 @@ app.controller('biomedicalController', function ($scope, $http) {
 
         });
 
+        $('#removeAssignments').click(function(event) {
+
+            var selections = $("#removeAssignmentsTable").bootstrapTable('getSelections');
+
+            if (selections.length) {
+
+                swal({
+                    title: 'Estás seguro?',
+                    text: "Removerás las asignaciones seleccionadas!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, remúevelas'
+                }).then(function () {
+
+                    $http({
+                        method: 'POST',
+                        url: '/delete/asignacion/',
+                        data: {
+                            assignment: JSON.stringify(selections)
+                        },
+                        dataType: 'JSON',
+                    }).then(function (response) {
+
+                        if (response.data == "true") {
+
+                            swal(
+                                'Eliminadas!',
+                                'Laa asignaciones han sido eliminadas.',
+                                'success'
+                            );
+
+                            $("#equipment_table").bootstrapTable('refresh');
+
+                            $("#equipment_manager_table").bootstrapTable('refresh');
+
+                            $("#assignments_table").bootstrapTable('refresh');
+
+                            $("#removeAssignmentsTable").bootstrapTable('refresh');
+
+                        } else {
+
+                            alert("No se ha podido eliminar :/");
+
+                        }
+
+                    }, function (response) {
+
+                        console.log("something went wrong");
+
+                    });
+
+                });
+
+
+            } else {
+
+                alert('Por favor establezca uno o más equipos');
+
+            }
+
+
+        });
+
         $('#sendMaintenanceSource').click(function(event) {
 
             var selections = $("#equipment_maintenance_table").bootstrapTable('getSelections');
@@ -187,11 +252,6 @@ app.controller('biomedicalController', function ($scope, $http) {
                 alert('Por favor establezca uno o más equipos');
 
             }
-
-            console.log();
-
-            // $("#equipmentManagerModal").modal("hide");
-            // $("#createEquipmentModal").modal("show");
 
         });
 
@@ -461,6 +521,8 @@ app.controller('biomedicalController', function ($scope, $http) {
                         console.log(response);
 
                         if (response.statusText == "OK") {
+
+                            $("#removeAssignmentsTable").bootstrapTable('refresh');
 
                             swal(
                                 'Asignación guardada satisfactoriamente!',
