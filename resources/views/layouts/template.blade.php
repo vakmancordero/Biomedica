@@ -21,6 +21,12 @@
 
     <title>@yield('title')</title>
 
+    <script>
+        window.Laravel = <?php echo json_encode([
+			'csrfToken' => csrf_token(),
+		]); ?>
+    </script>
+
 </head>
 <body>
 
@@ -40,13 +46,33 @@
                         <svg class="glyph stroked male-user">
                             <use xlink:href="#stroked-male-user"></use>
                         </svg>
-                        Usuario
+                        {{ Auth::user()->name }}
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Perfil</a></li>
-                        <li><a href="#"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Configuración</a></li>
-                        <li><a href="#"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Salir</a></li>
+                        {{--<li><a href="#"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Perfil</a></li>--}}
+                        {{--<li><a href="#"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Configuración</a></li>--}}
+                        {{--<li><a href="#"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Salir</a></li>--}}
+                        <li><a href="{{ url('/register') }}">
+                                {{--<svg class="glyph stroked cancel">--}}
+                                    {{--<use xlink:href="#stroked-cancel"></use>--}}
+                                {{--</svg>--}}
+                                <svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"/></svg>
+                                Registrar
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/logout') }}"
+                               onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                <svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg>
+                                Cerrar sesión
+                            </a>
+
+                            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
+                        </li>
                     </ul>
                 </li>
             </ul>

@@ -984,7 +984,8 @@ app.controller('biomedicalController', function ($scope, $http) {
             marca: row.Marca,
             modelo: row.Modelo,
             serie: row.NumeroSerie,
-            inventario: row.NumeroInventario
+            inventario: row.NumeroInventario,
+            observacion: row.Observaciones
         };
 
         $scope.equipmentCrud = $scope.currentEquipment;

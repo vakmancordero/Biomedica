@@ -11,10 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
-
 Route::get('/search/equipos', 'BiomedicalController@equipos');
 
 Route::get('/search/equipos/maintenance', 'BiomedicalController@equipos_maintenance');
@@ -42,3 +38,7 @@ Route::post('/create/equipo', 'BiomedicalController@store_equipo');
 Route::post('/delete/equipo', 'BiomedicalController@delete_equipo');
 
 Route::post('/update/equipo', 'BiomedicalController@update_equipo');
+
+Route::get('/', 'HomeController@index');
+
+Auth::routes();

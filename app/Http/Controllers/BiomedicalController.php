@@ -213,6 +213,7 @@ class BiomedicalController extends Controller {
         $equipment->Modelo = $equipmentJSON['modelo'];
         $equipment->NumeroSerie = $equipmentJSON['serie'];
         $equipment->NumeroInventario = $equipmentJSON['inventario'];
+        $equipment->Observaciones = $equipmentJSON['observacion'];
 
         $returnValue = $equipment->save();
 

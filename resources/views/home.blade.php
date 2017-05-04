@@ -27,28 +27,28 @@
                                     </div>
                                     <div class="panel-body">
                                         {{--<table class="table">--}}
-                                            {{--<thead class="thead-inverse">--}}
-                                            {{--<tr>--}}
-                                                {{--<th>ID</th>--}}
-                                                {{--<th>Equipo</th>--}}
-                                                {{--<th>EquipoID</th>--}}
-                                                {{--<th>Persona</th>--}}
-                                                {{--<th>Responsable</th>--}}
-                                                {{--<th>Estado</th>--}}
-                                                {{--<th>Eliminar</th>--}}
-                                            {{--</tr>--}}
-                                            {{--</thead>--}}
-                                            {{--<tbody>--}}
-                                            {{--<tr ng-repeat="assignment in assignments track by $index">--}}
-                                                {{--<td>@{{assignment.id}}</td>--}}
-                                                {{--<td>@{{assignment.equipo}}</td>--}}
-                                                {{--<td><strong>@{{assignment.idEquipo}}</strong></td>--}}
-                                                {{--<td>@{{assignment.persona}}</td>--}}
-                                                {{--<td>@{{assignment.responsable}}</td>--}}
-                                                {{--<td>@{{assignment.estado}}</td>--}}
-                                                {{--<td ng-if="assignment.estado == 'activo'"><input type="button" ng-click="delete($index)" class="btn btn-danger btn-sm" value="Eliminar"></td>--}}
-                                            {{--</tr>--}}
-                                            {{--</tbody>--}}
+                                        {{--<thead class="thead-inverse">--}}
+                                        {{--<tr>--}}
+                                        {{--<th>ID</th>--}}
+                                        {{--<th>Equipo</th>--}}
+                                        {{--<th>EquipoID</th>--}}
+                                        {{--<th>Persona</th>--}}
+                                        {{--<th>Responsable</th>--}}
+                                        {{--<th>Estado</th>--}}
+                                        {{--<th>Eliminar</th>--}}
+                                        {{--</tr>--}}
+                                        {{--</thead>--}}
+                                        {{--<tbody>--}}
+                                        {{--<tr ng-repeat="assignment in assignments track by $index">--}}
+                                        {{--<td>@{{assignment.id}}</td>--}}
+                                        {{--<td>@{{assignment.equipo}}</td>--}}
+                                        {{--<td><strong>@{{assignment.idEquipo}}</strong></td>--}}
+                                        {{--<td>@{{assignment.persona}}</td>--}}
+                                        {{--<td>@{{assignment.responsable}}</td>--}}
+                                        {{--<td>@{{assignment.estado}}</td>--}}
+                                        {{--<td ng-if="assignment.estado == 'activo'"><input type="button" ng-click="delete($index)" class="btn btn-danger btn-sm" value="Eliminar"></td>--}}
+                                        {{--</tr>--}}
+                                        {{--</tbody>--}}
                                         {{--</table>--}}
                                         <table id="removeAssignmentsTable"
                                                data-toggle="table"
@@ -267,33 +267,33 @@
 
                                                             <table class="table table-striped">
                                                                 <thead>
-                                                                    <tr>
-                                                                        <th>Atributo</th>
-                                                                        <th>Descripción</th>
-                                                                    </tr>
+                                                                <tr>
+                                                                    <th>Atributo</th>
+                                                                    <th>Descripción</th>
+                                                                </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr>
-                                                                        <td>ID</td>
-                                                                        <td>@{{person.id}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Nombre</td>
-                                                                        <td>@{{person.nombre}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            @{{typePerson == "student" ?
-                                                                                'Matrícula' :
-                                                                                'No. Control'
-                                                                            }}
-                                                                        </td>
-                                                                        <td>@{{person.matricula}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Carrera</td>
-                                                                        <td>@{{person.carrera}}</td>
-                                                                    </tr>
+                                                                <tr>
+                                                                    <td>ID</td>
+                                                                    <td>@{{person.id}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Nombre</td>
+                                                                    <td>@{{person.nombre}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        @{{typePerson == "student" ?
+                                                                            'Matrícula' :
+                                                                            'No. Control'
+                                                                        }}
+                                                                    </td>
+                                                                    <td>@{{person.matricula}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Carrera</td>
+                                                                    <td>@{{person.carrera}}</td>
+                                                                </tr>
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -396,21 +396,21 @@
                                     <div class="panel-body">
 
                                         <table id="equipment_manager_table"
-                                                data-toggle="table"
-                                                data-url="/search/equipos/"
-                                                data-show-refresh="true"
-                                                data-show-toggle="true"
-                                                data-show-columns="true"
-                                                data-show-export="true"
-                                                data-detail-view="true"
-                                                data-search="true"
-                                                data-pagination="true"
-                                                data-sort-name="name"
-                                                data-sort-order="desc"
-                                                data-page-list="[5, 6, 10, 25, 50, 100]"
-                                                data-page-size="6"
-                                                data-click-to-select="true"
-                                                data-maintain-selected="true">
+                                               data-toggle="table"
+                                               data-url="/search/equipos/"
+                                               data-show-refresh="true"
+                                               data-show-toggle="true"
+                                               data-show-columns="true"
+                                               data-show-export="true"
+                                               data-detail-view="true"
+                                               data-search="true"
+                                               data-pagination="true"
+                                               data-sort-name="name"
+                                               data-sort-order="desc"
+                                               data-page-list="[5, 6, 10, 25, 50, 100]"
+                                               data-page-size="6"
+                                               data-click-to-select="true"
+                                               data-maintain-selected="true">
                                             <thead>
                                             <tr>
                                                 <th data-field="id" data-sortable="true">ID</th>
@@ -419,6 +419,7 @@
                                                 <th data-field="Modelo" data-sortable="true">Modelo</th>
                                                 <th data-field="NumeroSerie" data-sortable="true">No. Serie</th>
                                                 <th data-field="NumeroInventario" data-sortable="true">No. Inventario</th>
+                                                <th data-field="Observaciones" data-sortable="true">Observaciones</th>
                                                 <th data-formatter="editFormatter" data-events="operateEvents">Editar</th>
                                                 <th data-formatter="deleteFormatter" data-events="operateEvents">Eliminar</th>
                                             </tr>
@@ -539,6 +540,12 @@
                                                         <input type="text" class="form-control" id="inventario" placeholder="Introducir No. Inventario" required ng-model="equipmentCrud.inventario">
                                                     </div>
                                                 </div>
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                        <label for="inventario">Observaciones:</label>
+                                                        <textarea class="form-control" rows="5" id="observacion" placeholder="Introducir una observación" ng-model="equipmentCrud.observacion"></textarea>
+                                                    </div>
+                                                </div>
                                                 <button type="submit" class="btn btn-primary btn-block">Guardar</button>
                                             </form>
                                         </div>
@@ -596,7 +603,7 @@
                                     <th data-field="NumeroSerie" data-sortable="true">No. Serie</th>
                                     <th data-field="NumeroInventario" data-sortable="true">No. Inventario</th>
                                     <th data-field="Observaciones" data-sortable="true">Observaciones</th>
-                                    <th data-field="Estado" data-sortable="true">Estado</th>
+                                    {{--<th data-field="Estado" data-sortable="true">Estado</th>--}}
                                 </tr>
                                 </thead>
                             </table>
@@ -761,10 +768,10 @@
                     </a>
                 </li>
                 {{--<li>--}}
-                    {{--<a id="persons" class="modal-click" href="#">--}}
-                        {{--<svg class="glyph stroked male user "><use xlink:href="#stroked-male-user"/></svg>--}}
-                        {{--Administrador de personas--}}
-                    {{--</a>--}}
+                {{--<a id="persons" class="modal-click" href="#">--}}
+                {{--<svg class="glyph stroked male user "><use xlink:href="#stroked-male-user"/></svg>--}}
+                {{--Administrador de personas--}}
+                {{--</a>--}}
                 {{--</li>--}}
                 <li>
                     <a id="maintenance" class="modal-click" href="#">
