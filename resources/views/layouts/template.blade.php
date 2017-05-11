@@ -39,7 +39,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Plataforma normada para equipamiento de laboratorio de ingeniería <span>Biomedica</span></a>
+            <a class="navbar-brand" href="#">Plataforma normada para equipamiento de laboratorio de ingeniería <span>Biomédica</span></a>
             <ul class="user-menu">
                 <li class="dropdown pull-right">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

@@ -36,7 +36,9 @@ class BiomedicalController extends Controller {
                     $personaEquipo->equipo->Modelo  . " - " .
                     $personaEquipo->equipo->NumeroInventario,
                 'estado' => $personaEquipo->status,
-                'idEquipo' => $personaEquipo->equipo->id
+                'idEquipo' => $personaEquipo->equipo->id,
+                'materia' => $personaEquipo->materia,
+                'cuatrimestre' => $personaEquipo->cuatrimestre,
             ];
 
             array_push($toReturnArr, $object);
@@ -111,7 +113,9 @@ class BiomedicalController extends Controller {
                         'idPersona' => $persona['id'],
                         'idResponsable' => $professor['id'],
                         'idEquipo' => $item['id'],
-                        'status' => 'activo'
+                        'status' => 'activo',
+                        'cuatrimestre' => $persona['cuatrimestre'],
+                        'materia' => $persona['materia']
                     ));
 
                     $equipmentUpdate = App\Equipo::find($idEquipment);

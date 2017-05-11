@@ -72,6 +72,8 @@
                                                 <th data-field="persona" data-sortable="true">Persona</th>
                                                 <th data-field="responsable" data-sortable="true">Responsable</th>
                                                 <th data-field="estado" data-sortable="true">Estado</th>
+                                                <th data-field="materia" data-sortable="true">Materia</th>
+                                                <th data-field="cuatrimestre" data-sortable="true">Cuatrimestre</th>
                                                 {{--<th data-field="Nombre"  data-sortable="true">Nombre</th>--}}
                                                 {{--<th data-field="Marca" data-sortable="true">Marca</th>--}}
                                                 {{--<th data-field="Modelo" data-sortable="true">Modelo</th>--}}
@@ -294,6 +296,46 @@
                                                                     <td>Carrera</td>
                                                                     <td>@{{person.carrera}}</td>
                                                                 </tr>
+                                                                <tr>
+                                                                    <td>Cuatrimestre:</td>
+                                                                    {{--<td>@{{person.carrera}}</td>--}}
+                                                                    <td>
+                                                                        <div class="form-group">
+                                                                            <select class="form-control" ng-model="person.cuatrimestrePE">
+                                                                                <option>1</option>
+                                                                                <option>2</option>
+                                                                                <option>3</option>
+                                                                                <option>4</option>
+                                                                                <option>5</option>
+                                                                                <option>6</option>
+                                                                                <option>7</option>
+                                                                                <option>8</option>
+                                                                                <option>9</option>
+                                                                                <option>10</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Materia:</td>
+                                                                    <td>
+                                                                        <div class="form-group">
+                                                                            <select class="form-control" ng-model="person.materia">
+                                                                                <option>Mediciones eléctricas</option>
+                                                                                <option>Fundamentos de electrónica</option>
+                                                                                <option>Electrónica analógica</option>
+                                                                                <option>Electrónica digital</option>
+                                                                                <option>Sensores y actuadores biomédicos.</option>
+                                                                                <option>Máquinas eléctricas.</option>
+                                                                                <option>Electrónica de potencia.</option>
+                                                                                <option>Suministros de energía eléctrica.</option>
+                                                                                <option>Desarrollo de sistemas biomédicos.</option>
+                                                                                <option>Integración de sistemas biomédicos.</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+
                                                                 </tbody>
                                                             </table>
                                                         </div>

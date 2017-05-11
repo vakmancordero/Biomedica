@@ -508,73 +508,85 @@ app.controller('biomedicalController', function ($scope, $http) {
 
                 if ($scope.assignedProfessor.found) {
 
-                    console.log("Resultados:");
+                    if ($scope.person.cuatrimestrePE != undefined && $scope.person.materia != undefined) {
 
-                    console.log($scope.person);
-                    console.log($scope.assignedProfessor);
-                    console.log($scope.equipment);
+                        console.log("Resultados:");
 
-                    $http({
-                        method: 'POST',
-                        url: '/create/asignacion/',
-                        data: {
-                            person: JSON.stringify($scope.person),
-                            professor: JSON.stringify($scope.assignedProfessor),
-                            equipment: JSON.stringify($scope.equipment),
-                        },
-                        dataType: 'JSON',
-                    }).then(function (response) {
+                        console.log($scope.person);
+                        console.log($scope.assignedProfessor);
+                        console.log($scope.equipment);
 
-                        console.log(response);
+                        $http({
+                            method: 'POST',
+                            url: '/create/asignacion/',
+                            data: {
+                                person: JSON.stringify($scope.person),
+                                professor: JSON.stringify($scope.assignedProfessor),
+                                equipment: JSON.stringify($scope.equipment),
+                            },
+                            dataType: 'JSON',
+                        }).then(function (response) {
 
-                        if (response.statusText == "OK") {
+                            console.log(response);
 
-                            $("#removeAssignmentsTable").bootstrapTable('refresh');
+                            if (response.statusText == "OK") {
 
-                            swal(
-                                'Asignación guardada satisfactoriamente!',
-                                'Elementos utilizados: ' + $scope.equipment.length,
-                                'success'
-                            );
+                                $("#removeAssignmentsTable").bootstrapTable('refresh');
 
-                            angular.forEach($scope.equipment, function(equipment, key) {
+                                swal(
+                                    'Asignación guardada satisfactoriamente!',
+                                    'Elementos utilizados: ' + $scope.equipment.length,
+                                    'success'
+                                );
 
-                                $("#equipment_table").bootstrapTable('remove', {
-                                    field: 'id',
-                                    values: [equipment.id]
+                                angular.forEach($scope.equipment, function(equipment, key) {
+
+                                    $("#equipment_table").bootstrapTable('remove', {
+                                        field: 'id',
+                                        values: [equipment.id]
+                                    });
+
+                                    $("#equipment_manager_table").bootstrapTable('remove', {
+                                        field: 'id',
+                                        values: [equipment.id]
+                                    });
+
                                 });
 
-                                $("#equipment_manager_table").bootstrapTable('remove', {
-                                    field: 'id',
-                                    values: [equipment.id]
+                                $http({
+                                    method: 'GET',
+                                    url: '/search/asignaciones/'
+                                }).then(function (response) {
+
+                                    $scope.assignments = [];
+
+                                    angular.forEach(response.data, function(assignment, key) {
+                                        $scope.assignments.push(assignment);
+                                    });
+
+                                    console.log($scope.assignments);
+
+                                }, function (response) {
+
+                                    console.log("something went wrong");
+
                                 });
 
-                            });
+                                $("#equipmentModal").modal("hide");
 
-                            $http({
-                                method: 'GET',
-                                url: '/search/asignaciones/'
-                            }).then(function (response) {
+                                $scope.resetVariables();
 
-                                $scope.assignments = [];
+                            } else {
 
-                                angular.forEach(response.data, function(assignment, key) {
-                                    $scope.assignments.push(assignment);
-                                });
+                                swal(
+                                    'Error al guardar la asignación!',
+                                    'Inténtelo de nuevo!',
+                                    'error'
+                                );
 
-                                console.log($scope.assignments);
+                            }
 
-                            }, function (response) {
-
-                                console.log("something went wrong");
-
-                            });
-
-                            $("#equipmentModal").modal("hide");
-
-                            $scope.resetVariables();
-
-                        } else {
+                        }, function (response) {
 
                             swal(
                                 'Error al guardar la asignación!',
@@ -582,17 +594,12 @@ app.controller('biomedicalController', function ($scope, $http) {
                                 'error'
                             );
 
-                        }
+                        });
+                    } else {
 
-                    }, function (response) {
+                        alert("Por favor introduzca los campos faltantes");
 
-                        swal(
-                            'Error al guardar la asignación!',
-                            'Inténtelo de nuevo!',
-                            'error'
-                        );
-
-                    });
+                    }
 
                 } else {
 
