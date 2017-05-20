@@ -1,0 +1,16 @@
+table.pdf-center {
+    border-collapse: separate;
+    border-spacing: 50px -5px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+/*select {*/
+    /*width:300px;*/
+/*}*/
+
+/*select option {*/
+    /*width:150px;*/
+/*}*/

@@ -13,7 +13,9 @@ class PersonaEquipo extends Model {
         'idEquipo',
         'status',
         'cuatrimestre',
-        'materia'
+        'materia',
+		'created_at',
+		'updated_at'
     ];
 
 	public function persona() {

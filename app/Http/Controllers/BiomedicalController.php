@@ -6,10 +6,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use App;
+use Carbon\Carbon;
 
 class BiomedicalController extends Controller {
 
-    public function equipos() {
+	public function getFirstPDF(Request $request, $number) {
+		
+		$assignment = App\PersonaEquipo::find($number);
+		
+		return view('pdf.first')->with('assignment', $assignment);
+	}
+	
+	public function equipos() {
         return App\Equipo::where('Estado', '!=', 'En uso')->where('Estado', '!=', 'En mantenimiento')->get();
     }
 

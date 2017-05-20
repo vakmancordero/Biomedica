@@ -919,7 +919,11 @@ app.controller('biomedicalController', function ($scope, $http) {
 
     };
 
+    $scope.getPDF = function (row, index) {
 
+        window.open("/pdf/first/" + row.id,'_blank');
+
+    };
 
     $scope.removeMaintenanceEquipment = function (row, index) {
 
@@ -1027,6 +1031,14 @@ function deleteMaintenanceFormatter(value, row, index) {
     ].join('');
 }
 
+function pdfFormatter(value, row, index) {
+    return [
+        '<button class="btn btn-primary pdf" href="javascript:void(0)">',
+        'Imprimir',
+        '</button>'
+    ].join('');
+}
+
 window.operateEvents = {
 
     'click .delete': function (e, value, row, index) {
@@ -1048,6 +1060,13 @@ window.operateEvents = {
         var biomedicalApp = getApp('biomedicalApp');
 
         biomedicalApp.removeMaintenanceEquipment(row, index);
+
+    },
+    'click .pdf': function (e, value, row, index) {
+
+        var biomedicalApp = getApp('biomedicalApp');
+
+        biomedicalApp.getPDF(row, index);
 
     }
 };

@@ -39,6 +39,9 @@ Route::post('/delete/equipo', 'BiomedicalController@delete_equipo');
 
 Route::post('/update/equipo', 'BiomedicalController@update_equipo');
 
+Route::get('/pdf/first/{number}', array('as'=>'test','uses'=>'BiomedicalController@getFirstPDF'));
+Route::get('/pdf/first/{number}', 'BiomedicalController@getFirstPDF');
+
 Route::get('/', 'HomeController@index');
 
 Auth::routes();

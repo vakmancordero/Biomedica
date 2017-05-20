@@ -135,6 +135,7 @@
                                                 <th data-field="persona" data-sortable="true">Persona</th>
                                                 <th data-field="responsable" data-sortable="true">Responsable</th>
                                                 <th data-field="fecha" data-sortable="true">Fecha</th>
+                                                <th data-formatter="pdfFormatter" data-events="operateEvents">Imprimir</th>
                                             </tr>
                                             </thead>
                                         </table>
