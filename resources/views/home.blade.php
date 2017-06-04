@@ -128,21 +128,23 @@
                                                data-maintain-selected="true">
                                             <thead>
                                             <tr>
-                                                {{--<th data-checkbox="true" >ID</th>--}}
+                                                <th data-checkbox="true" >ID</th>
                                                 <th data-field="id" data-sortable="true">ID</th>
                                                 <th data-field="equipo"  data-sortable="true">Equipo</th>
                                                 <th data-field="idEquipo"  data-sortable="true">EquipoID</th>
+                                                <th data-field="materia"  data-sortable="true">Materia</th>
                                                 <th data-field="persona" data-sortable="true">Persona</th>
                                                 <th data-field="responsable" data-sortable="true">Responsable</th>
                                                 <th data-field="fecha" data-sortable="true">Fecha</th>
-                                                <th data-formatter="pdfFormatter" data-events="operateEvents">Imprimir</th>
                                             </tr>
                                             </thead>
                                         </table>
                                     </div>
                                 </div>
+                                <button ng-click="printAssignments()" class="btn btn-success">Imprimir asignaciones</button>
                             </div>
                         </div>
+
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
@@ -152,7 +154,7 @@
         </div>
 
         {{-- Modal de tipo de persona --}}
-        <div class="modal fade" id="typeModal" tabindex="-1">
+        <div class="modal fade" id="typeModal" tabindex="-1" data-keyboard="false" data-backdrop="static">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -180,7 +182,7 @@
         </div>
 
         {{-- Modal de asignacion de equipo y personas --}}
-        <div class="modal fade" id="equipmentModal" tabindex="-1">
+        <div class="modal fade" id="equipmentModal" tabindex="-1" data-keyboard="false" data-backdrop="static">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -268,77 +270,121 @@
                                                         </div>
                                                         <div class="panel-body">
 
-                                                            <table class="table table-striped">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th>Atributo</th>
-                                                                    <th>Descripción</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                <tr>
-                                                                    <td>ID</td>
-                                                                    <td>@{{person.id}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Nombre</td>
-                                                                    <td>@{{person.nombre}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        @{{typePerson == "student" ?
-                                                                            'Matrícula' :
-                                                                            'No. Control'
-                                                                        }}
-                                                                    </td>
-                                                                    <td>@{{person.matricula}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Carrera</td>
-                                                                    <td>@{{person.carrera}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Cuatrimestre:</td>
-                                                                    {{--<td>@{{person.carrera}}</td>--}}
-                                                                    <td>
-                                                                        <div class="form-group">
-                                                                            <select class="form-control" ng-model="person.cuatrimestrePE">
-                                                                                <option>1</option>
-                                                                                <option>2</option>
-                                                                                <option>3</option>
-                                                                                <option>4</option>
-                                                                                <option>5</option>
-                                                                                <option>6</option>
-                                                                                <option>7</option>
-                                                                                <option>8</option>
-                                                                                <option>9</option>
-                                                                                <option>10</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Materia:</td>
-                                                                    <td>
-                                                                        <div class="form-group">
-                                                                            <select class="form-control" ng-model="person.materia">
-                                                                                <option>Mediciones eléctricas</option>
-                                                                                <option>Fundamentos de electrónica</option>
-                                                                                <option>Electrónica analógica</option>
-                                                                                <option>Electrónica digital</option>
-                                                                                <option>Sensores y actuadores biomédicos.</option>
-                                                                                <option>Máquinas eléctricas.</option>
-                                                                                <option>Electrónica de potencia.</option>
-                                                                                <option>Suministros de energía eléctrica.</option>
-                                                                                <option>Desarrollo de sistemas biomédicos.</option>
-                                                                                <option>Integración de sistemas biomédicos.</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
+                                                            <div ng-switch on="typePerson">
+                                                                <div ng-switch-when="student">
 
-                                                                </tbody>
-                                                            </table>
+                                                                    <table class="table table-striped">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th>Atributo</th>
+                                                                            <th>Descripción</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <td>ID</td>
+                                                                            <td>@{{person.id}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Nombre</td>
+                                                                            <td>@{{person.nombre}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                @{{typePerson == "student" ?
+                                                                                    'Matrícula' :
+                                                                                    'No. Control'
+                                                                                }}
+                                                                            </td>
+                                                                            <td>@{{person.matricula}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Carrera</td>
+                                                                            <td>@{{person.carrera}}</td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>Cuatrimestre:</td>
+                                                                            <td>
+                                                                                <div class="form-group">
+                                                                                    <select class="form-control" ng-model="person.cuatrimestrePE">
+                                                                                        <option>1</option>
+                                                                                        <option>2</option>
+                                                                                        <option>3</option>
+                                                                                        <option>4</option>
+                                                                                        <option>5</option>
+                                                                                        <option>6</option>
+                                                                                        <option>7</option>
+                                                                                        <option>8</option>
+                                                                                        <option>9</option>
+                                                                                        <option>10</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Materia:</td>
+                                                                            <td>
+                                                                                <div class="form-group">
+                                                                                    <select class="form-control" ng-model="person.materia">
+                                                                                        <option>Mediciones eléctricas</option>
+                                                                                        <option>Fundamentos de electrónica</option>
+                                                                                        <option>Electrónica analógica</option>
+                                                                                        <option>Electrónica digital</option>
+                                                                                        <option>Sensores y actuadores biomédicos.</option>
+                                                                                        <option>Máquinas eléctricas.</option>
+                                                                                        <option>Electrónica de potencia.</option>
+                                                                                        <option>Suministros de energía eléctrica.</option>
+                                                                                        <option>Desarrollo de sistemas biomédicos.</option>
+                                                                                        <option>Integración de sistemas biomédicos.</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                </div>
+
+                                                                <div ng-switch-when="professor">
+
+                                                                    <table class="table table-striped">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th>Atributo</th>
+                                                                            <th>Descripción</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <td>ID</td>
+                                                                            <td>@{{person.id}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Nombre</td>
+                                                                            <td>@{{person.nombre}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                @{{typePerson == "student" ?
+                                                                                    'Matrícula' :
+                                                                                    'No. Control'
+                                                                                }}
+                                                                            </td>
+                                                                            <td>@{{person.matricula}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Carrera</td>
+                                                                            <td>@{{person.carrera}}</td>
+                                                                        </tr>
+
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                     </div>
                                                     <div ng-switch-when="false">
@@ -482,7 +528,7 @@
         </div>
 
         {{-- Crear un equipo --}}
-        <div class="modal fade" id="createEquipmentModal" tabindex="-1">
+        <div class="modal fade" id="createEquipmentModal" tabindex="-1" >
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -777,8 +823,8 @@
                                                 <th data-field="Modelo" data-sortable="true">Modelo</th>
                                                 <th data-field="NumeroSerie" data-sortable="true">No. Serie</th>
                                                 <th data-field="NumeroInventario" data-sortable="true">No. Inventario</th>
-                                                {{--<th data-formatter="editFormatter" data-events="operateEvents">Editar</th>--}}
                                                 <th data-formatter="deleteMaintenanceFormatter" data-events="operateEvents">Remover</th>
+                                                <th data-formatter="pdfFormatterFirst" data-events="operateEvents">Imprimir</th>
                                             </tr>
                                             </thead>
                                         </table>

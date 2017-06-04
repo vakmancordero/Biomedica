@@ -42,6 +42,10 @@ Route::post('/update/equipo', 'BiomedicalController@update_equipo');
 Route::get('/pdf/first/{number}', array('as'=>'test','uses'=>'BiomedicalController@getFirstPDF'));
 Route::get('/pdf/first/{number}', 'BiomedicalController@getFirstPDF');
 
+Route::post('/print/assignments/', 'BiomedicalController@printAssignments');
+
+Route::get('/pdf/second/', 'BiomedicalController@getSecondPDF');
+
 Route::get('/', 'HomeController@index');
 
 Auth::routes();

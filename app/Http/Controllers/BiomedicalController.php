@@ -12,12 +12,42 @@ class BiomedicalController extends Controller {
 
 	public function getFirstPDF(Request $request, $number) {
 		
-		$assignment = App\PersonaEquipo::find($number);
+		$equipment = App\Equipo::find($number);
 		
-		return view('pdf.first')->with('assignment', $assignment);
+		return view('pdf.first')->with('equipment', $equipment);
 	}
-	
-	public function equipos() {
+
+    public function printAssignments(Request $request) {
+
+        $assignments = json_decode($request->input('assignments'), true);
+
+        foreach ($assignments as $item) {
+
+            $assignment = App\PersonaEquipo::find($item['id']);
+
+            $assignment->printing = "si";
+            $assignment->save();
+
+        }
+
+        return "success";
+
+    }
+
+    public function getSecondPDF(Request $request) {
+
+        $assignments = App\PersonaEquipo::where('printing', 'si')->get();
+
+        $name = App\PersonaEquipo::where('printing', 'si')->first()->persona->nombre;
+
+        DB::table('personaequipo')
+            ->where('printing', "si")
+            ->update(['printing' => "no"]);
+
+        return view('pdf.second')->with('assignments', $assignments)->with('name', $name);
+    }
+
+    public function equipos() {
         return App\Equipo::where('Estado', '!=', 'En uso')->where('Estado', '!=', 'En mantenimiento')->get();
     }
 
@@ -70,6 +100,7 @@ class BiomedicalController extends Controller {
                     $personaEquipo->equipo->Marca  . " - " .
                     $personaEquipo->equipo->Modelo  . " - " .
                     $personaEquipo->equipo->NumeroInventario,
+                'materia' => $personaEquipo->materia,
                 'estado' => $personaEquipo->status,
                 'idEquipo' => $personaEquipo->equipo->id,
                 'fecha' => $personaEquipo->created_at->format('d M Y - H:i:s')

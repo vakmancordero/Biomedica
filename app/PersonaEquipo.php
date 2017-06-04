@@ -15,7 +15,8 @@ class PersonaEquipo extends Model {
         'cuatrimestre',
         'materia',
 		'created_at',
-		'updated_at'
+		'updated_at',
+        'printing'
     ];
 
 	public function persona() {

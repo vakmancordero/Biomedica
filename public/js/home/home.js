@@ -284,6 +284,46 @@ app.controller('biomedicalController', function ($scope, $http) {
 
     }
 
+    $scope.printAssignments = function() {
+
+        var assignmentsTable = $("#assignments_table");
+
+        var selections = assignmentsTable.bootstrapTable('getSelections');
+
+        if (selections.length) {
+
+            $http({
+                method: 'POST',
+                url: '/print/assignments/',
+                data: {
+                    assignments: JSON.stringify(selections)
+                },
+                dataType: 'JSON',
+            }).then(function (response) {
+
+                console.log(response);
+
+                if (true) {
+
+                    window.open("/pdf/second/",'_blank');
+
+                }
+
+            }, function (response) {
+
+                console.log("something went wrong");
+
+            });
+
+        } else {
+
+            alert('Por favor establezca una o más asignaciones');
+
+        }
+
+
+    };
+
     $scope.typeAction = function() {
 
 
@@ -371,6 +411,8 @@ app.controller('biomedicalController', function ($scope, $http) {
                         );
 
                     }
+
+                    console.log($scope.typePerson);
 
                 } else {
 
@@ -919,9 +961,15 @@ app.controller('biomedicalController', function ($scope, $http) {
 
     };
 
-    $scope.getPDF = function (row, index) {
+    $scope.getFirstPDF = function (row, index) {
 
         window.open("/pdf/first/" + row.id,'_blank');
+
+    };
+
+    $scope.getSecondPDF = function (row, index) {
+
+        window.open("/pdf/second/" + row.id,'_blank');
 
     };
 
@@ -1031,13 +1079,14 @@ function deleteMaintenanceFormatter(value, row, index) {
     ].join('');
 }
 
-function pdfFormatter(value, row, index) {
+function pdfFormatterFirst(value, row, index) {
     return [
-        '<button class="btn btn-primary pdf" href="javascript:void(0)">',
+        '<button class="btn btn-primary pdf-first" href="javascript:void(0)">',
         'Imprimir',
         '</button>'
     ].join('');
 }
+
 
 window.operateEvents = {
 
@@ -1062,13 +1111,14 @@ window.operateEvents = {
         biomedicalApp.removeMaintenanceEquipment(row, index);
 
     },
-    'click .pdf': function (e, value, row, index) {
+    'click .pdf-first': function (e, value, row, index) {
 
         var biomedicalApp = getApp('biomedicalApp');
 
-        biomedicalApp.getPDF(row, index);
+        biomedicalApp.getFirstPDF(row, index);
 
     }
+
 };
 
 function getApp(app) {
