@@ -48,4 +48,10 @@ Route::get('/pdf/second/', 'BiomedicalController@getSecondPDF');
 
 Route::get('/', 'HomeController@index');
 
+Route::get('/documentos/{id}',  function($id) {
+
+    return response()->download("../resources/documents/" . $id);
+
+});
+
 Auth::routes();

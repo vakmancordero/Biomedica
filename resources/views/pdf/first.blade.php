@@ -37,15 +37,26 @@
         <table class="table table-bordered">
             <tr>
                 <td rowspan="4" valign="middle">
-                    {{--<h1>UPCH</h1>--}}
                     <img src="{{ asset('img/logo.png') }}" width="250px">
                 </td>
                 <td align="center">
                     <h4>Tipo de documento: Registro</h4>
                 </td>
                 <td>
-                    <h5>Código: SAC-DSA-RG-41</h5>
-                    <h5>Emisión:  08 de Diciembre de 2014</h5>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label for="emision">
+                                <h5>Emisión: </h5>
+                            </label>
+                            <input type="text" class="form-control" id="emision" placeholder="" name="emision" value="SAC-DSA-RG-41">
+                        </div>
+                        <div class="form-group">
+                            <label for="codigo">
+                                <h5>Código:</h5>
+                            </label>
+                            <input type="text" class="form-control" id="codigo" placeholder="" name="codigo" value="08 de Diciembre de 2014">
+                        </div>
+                    </div>
                 </td>
             </tr>
             <tr>

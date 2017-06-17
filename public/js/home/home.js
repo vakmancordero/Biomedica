@@ -103,6 +103,10 @@ app.controller('biomedicalController', function ($scope, $http) {
 
                 console.log("Modulo no finalizado");
 
+            } else if(idModal == 'documents') {
+
+                $("#documentsModal").modal("show");
+
             }
 
         });

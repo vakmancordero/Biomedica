@@ -153,6 +153,73 @@
             </div>
         </div>
 
+        {{-- Modal de documentación de laboratorio --}}
+        <div class="modal fade" id="documentsModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Documentación</h4>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h2 style="color: darkslategrey">Documentación de laboratorio:</h2>
+                                    </div>
+                                    <div class="panel-body">
+
+                                        <a class="btn btn-default" href="/documentos/CALENDARIO ANUAL DE MANTENIMIENTO DE EQUIPOS DE LABORATORIOS Y TALLERES.xlsx">
+                                            CALENDARIO ANUAL DE MANTENIMIENTO DE EQUIPOS DE LABORATORIOS Y TALLERES
+                                        </a><br><br>
+
+                                        <a class="btn btn-default" href="/documentos/CALENDARIO ANUAL DE MANTTO sept 2012.xlsx">
+                                            CALENDARIO ANUAL DE MANTTO sept 2012
+                                        </a><br><br>
+
+                                        <a class="btn btn-default" href="/documentos/Laboratorio-IngenieriaBiomedica.xlsx">
+                                            Catálogo de equipos de laboratorio de Ingeniería Biomédica
+                                        </a><br><br>
+
+                                        <a class="btn btn-default" href="/documentos/HORARIO LABORATORIO ENE-ABR 2017.doc">
+                                            Horario de laboratorio (Enero - Abril) 2017
+                                        </a><br><br>
+
+                                        <a class="btn btn-default" href="/documentos/HORARIO TALLER ENE-ABR 2017.doc">
+                                            Horario de taller (Enero - Abril) 2017
+                                        </a><br><br>
+
+                                        <a class="btn btn-default" href="/documentos/Registro7-DPAS-Asesorias y Laboratorios.doc">
+                                            Seguimiento y medición del proceso
+                                        </a><br><br>
+
+                                        <a class="btn btn-default" href="/documentos/SAC-DSA.PO-12  SERV LAB Y TALL PA.doc">
+                                            Servicio de los laboratorios y talleres de los PA
+                                        </a><br><br>
+
+                                        <a class="btn btn-default" href="/documentos/SAC-DSA.RG-40 MAT, EQ Y MANT LAB Y TALL.doc">
+                                            Registro de materiales, equipos y matenimientos de laboratorios y talleres
+                                        </a><br><br>
+
+                                        <a class="btn btn-default" href="/documentos/SAC-DSA.RG-42 USO ESPAC Y EQUI LAB Y TALL.doc">
+                                            Uso de espacios y equipos de laboratorios y talleres
+                                        </a><br><br>
+
+                                        <a class="btn btn-default" href="/documentos/SAC-DSA.RG-44  LISTA COTEJO LAB TALL.doc">
+                                            Lista de cotejo - Laboratorios y Talleres
+                                        </a><br><br>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {{-- Modal de tipo de persona --}}
         <div class="modal fade" id="typeModal" tabindex="-1" data-keyboard="false" data-backdrop="static">
             <div class="modal-dialog" role="document">
@@ -856,12 +923,6 @@
                         Administrador de equipos
                     </a>
                 </li>
-                {{--<li>--}}
-                {{--<a id="persons" class="modal-click" href="#">--}}
-                {{--<svg class="glyph stroked male user "><use xlink:href="#stroked-male-user"/></svg>--}}
-                {{--Administrador de personas--}}
-                {{--</a>--}}
-                {{--</li>--}}
                 <li>
                     <a id="maintenance" class="modal-click" href="#">
                         <svg class="glyph stroked hourglass"><use xlink:href="#stroked-hourglass"/></svg>
@@ -878,6 +939,12 @@
                     <a id="assignments_historial" class="modal-click" href="#">
                         <svg class="glyph stroked eye"><use xlink:href="#stroked-eye"/></svg>
                         Historial de asignaciones
+                    </a>
+                </li>
+                <li>
+                    <a id="documents" class="modal-click" href="#">
+                        <svg class="glyph stroked download"><use xlink:href="#stroked-download"/></svg>
+                        Documentación de laboratorio
                     </a>
                 </li>
             </ul>

@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}">
+
     <!-- StyleSheet -->
     <link rel="stylesheet" type="text/css" href="{{ asset('lib/bootstrap-3.3.7/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/datepicker.css') }}">
